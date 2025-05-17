@@ -8,9 +8,9 @@ class CompilerIntegrationTest : public ::testing::Test {
 protected:
     void SetUp() override {
         // Prepare a simple source string for testing
-        source = "print 'Hello, World!'";
+        source = "print 10";
         scanner = std::make_unique<Scanner>(source);
-        writer = std::make_unique<ByteCodeWriter>("TestClass");
+        writer = std::make_unique<ByteCodeWriter>("Acorn");
     }
 
     std::string source;
@@ -20,5 +20,5 @@ protected:
 
 TEST_F(CompilerIntegrationTest, CompilesWithoutThrowing) {
     Compiler compiler(std::move(scanner), std::move(writer));
-    EXPECT_NO_THROW(compiler.compile("TestClass.class"));
+    EXPECT_NO_THROW(compiler.compile("Acorn.class"));
 }
