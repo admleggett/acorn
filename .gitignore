@@ -1,0 +1,36 @@
+# Build directories
+build/
+cmake-build-*/
+
+# CLion project files
+.idea/
+*.iml
+
+# CMake generated files
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+CTestTestfile.cmake
+
+# Binaries and object files
+*.o
+*.obj
+*.exe
+*.out
+*.class
+acornc
+acorn
+integrationTest
+
+# Test output
+Testing/
+
+# Logs
+*.log
+
+# Misc
+*.swp
+*~
+.DS_Store
+
