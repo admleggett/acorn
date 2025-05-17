@@ -7,7 +7,7 @@
 class ByteCodeWriter {
 public:
     explicit ByteCodeWriter(std::string className);
-    void write(const std::vector<std::string>& tokens, const std::string& outputFile);
+    void write(const std::vector<std::string>& tokens, const std::string& outputFile) const;
 private:
     std::string className_;
 };
