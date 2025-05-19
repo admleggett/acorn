@@ -3,6 +3,9 @@
 
 #include <string>
 #include <vector>
+#include <fstream>
+#include <cstdint>
+#include "model/byteCodeSerializable.h"
 
 class ByteCodeWriter {
 public:

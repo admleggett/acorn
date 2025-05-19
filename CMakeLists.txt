@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.28)
+cmake_minimum_required(VERSION 3.16.3)
 project(acorn)
 
 set(CMAKE_CXX_STANDARD 17)
@@ -12,6 +12,7 @@ add_executable(acornc
 
 target_include_directories(acornc PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/src
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/model
 )
 
 include(FetchContent)
@@ -31,7 +32,10 @@ add_executable(integrationTest
         src/byteCodeWriter.cpp
         src/compiler.cpp
 )
-target_include_directories(integrationTest PRIVATE src)
+target_include_directories(integrationTest PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/src
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/model
+)
 target_link_libraries(integrationTest gtest_main)
 
 add_test(NAME CompilerIntegrationTest COMMAND integrationTest)

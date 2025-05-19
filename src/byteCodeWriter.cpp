@@ -2,6 +2,7 @@
 #include <fstream>
 #include <vector>
 #include <cstdint>
+#include "model/classFileHeader.h"
 
 ByteCodeWriter::ByteCodeWriter(std::string className) : className_(std::move(className)) {}
 
@@ -24,6 +25,12 @@ void ByteCodeWriter::write(const std::vector<std::string>& tokens, const std::st
         outFile.put((v >> 8) & 0xFF);
         outFile.put(v & 0xFF);
     };
+    //lambda to write a byteCodeSerializable object
+    auto write = [&](const ByteCodeSerializable& entry) {
+        auto bytes = entry.serialize();
+        outFile.write(reinterpret_cast<const char*>(bytes.data()), bytes.size());
+    };
+
 
     // --- CONSTANT POOL SETUP ---
     // Indices:
@@ -45,10 +52,13 @@ void ByteCodeWriter::write(const std::vector<std::string>& tokens, const std::st
     size_t codeNameLen = 4;
 
     // Magic number
-    write_u4(0xCAFEBABE);
+    //write_u4(0xCAFEBABE);
     // Minor version (0), Major version (52 = Java 8)
-    write_u2(0);
-    write_u2(52);
+    //write_u2(0);
+    //write_u2(52);
+    ClassFileHeader header;
+    write(header);
+
 
     // Constant pool count (8: 1 unused, 2 class entries, 2 utf8 entries, 3 for main method)
     write_u2(8);
