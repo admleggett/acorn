@@ -26,16 +26,22 @@ FetchContent_MakeAvailable(googletest)
 enable_testing()
 
 # Test sources
-add_executable(integrationTest
+add_executable(GTest
         tests/compilerIntegrationTest.cpp
+        tests/constantPoolTest.cpp
+        tests/classHeaderInfoTest.cpp
         src/scanner.cpp
         src/byteCodeWriter.cpp
         src/compiler.cpp
 )
-target_include_directories(integrationTest PRIVATE
+target_include_directories(GTest PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/src
         ${CMAKE_CURRENT_SOURCE_DIR}/src/model
+        ${CMAKE_CURRENT_SOURCE_DIR}/tests
 )
-target_link_libraries(integrationTest gtest_main)
+target_link_libraries(GTest gtest_main)
 
-add_test(NAME CompilerIntegrationTest COMMAND integrationTest)
+# add all tests to the test suite
+add_test(NAME CompilerIntegrationTest COMMAND GTest)
+add_test(NAME ConstantPoolTest COMMAND GTest)
+add_test(NAME ClassHeaderInfoTest COMMAND GTest)

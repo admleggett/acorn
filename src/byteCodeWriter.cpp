@@ -2,7 +2,13 @@
 #include <fstream>
 #include <vector>
 #include <cstdint>
+#include <memory>
 #include "model/classFileHeader.h"
+#include "model/constantClassInfo.h"
+#include "model/constantUtf8Info.h"
+#include "model/constantPool.h"
+#include "model/classHeaderInfo.h"
+#include "model/classByteCode.h"
 
 ByteCodeWriter::ByteCodeWriter(std::string className) : className_(std::move(className)) {}
 
@@ -31,90 +37,52 @@ void ByteCodeWriter::write(const std::vector<std::string>& tokens, const std::st
         outFile.write(reinterpret_cast<const char*>(bytes.data()), bytes.size());
     };
 
-
-    // --- CONSTANT POOL SETUP ---
-    // Indices:
-    // 1: Class_info (our class), name_index=2
-    // 2: Utf8 (our class name)
-    // 3: Class_info (java/lang/Object), name_index=4
-    // 4: Utf8 ("java/lang/Object")
-    // 5: Utf8 ("main")
-    // 6: Utf8 ("([Ljava/lang/String;)V")
-    // 7: Utf8 ("Code")
-
-    const char* objName = "java/lang/Object";
-    size_t objNameLen = 16;
-    const char* mainName = "main";
-    size_t mainNameLen = 4;
-    const char* mainDesc = "([Ljava/lang/String;)V";
-    size_t mainDescLen = 22;
-    const char* codeName = "Code";
-    size_t codeNameLen = 4;
-
-    // Magic number
-    //write_u4(0xCAFEBABE);
-    // Minor version (0), Major version (52 = Java 8)
-    //write_u2(0);
-    //write_u2(52);
     ClassFileHeader header;
-    write(header);
 
+    // create a constant pool with entries for the classname and the superclass
+    auto classInfo = std::make_shared<ConstantClassInfo>(2);
+    auto className = std::make_shared<ConstantUtf8Info>(className_);
+    auto superClassInfo = std::make_shared<ConstantClassInfo>(4);
+    auto superClassName = std::make_shared<ConstantUtf8Info>("java/lang/Object");
+    auto mainName = std::make_shared<ConstantUtf8Info>("main");
+    auto mainDesc = std::make_shared<ConstantUtf8Info>("([Ljava/lang/String;)V");
+    auto codeName = std::make_shared<ConstantUtf8Info>("Code");
 
-    // Constant pool count (8: 1 unused, 2 class entries, 2 utf8 entries, 3 for main method)
-    write_u2(8);
+    ConstantPool constantPool;
+    constantPool.addEntry(classInfo); // #1
+    constantPool.addEntry(className); // #2
+    constantPool.addEntry(superClassInfo); // #3
+    constantPool.addEntry(superClassName); // #4
+    constantPool.addEntry(mainName); // #5
+    constantPool.addEntry(mainDesc); // #6
+    constantPool.addEntry(codeName); // #7
 
-    // #1: Class_info (tag 7), name_index = 2 (our class)
-    outFile.put(7);
-    write_u2(2);
+    ClassHeaderInfo classHeader(
+        0x0021, // flags: public, super
+        1,      // this_class: #1 (our class)
+        3,      // super_class: #3 (java/lang/Object)
+        0,      // interfaces_count
+        0,      // fields_count
+        0,      // methods_count
+        0       // attributes_count
+    );
 
-    // #2: Utf8_info (tag 1), length, bytes (our class name)
-    outFile.put(1);
-    write_u2(className_.size());
-    outFile.write(className_.c_str(), className_.size());
+    ClassByteCode classByteCode(std::make_shared<ClassFileHeader>(header),
+        std::make_shared<ConstantPool>(constantPool),
+        std::make_shared<ClassHeaderInfo>(classHeader));
 
-    // #3: Class_info (tag 7), name_index = 4 (java/lang/Object)
-    outFile.put(7);
-    write_u2(4);
+    write(classByteCode);
 
-    // #4: Utf8_info (tag 1), length, bytes ("java/lang/Object")
-    outFile.put(1);
-    write_u2(objNameLen);
-    outFile.write(objName, objNameLen);
-
-    // #5: Utf8_info (tag 1), length, bytes ("main")
-    outFile.put(1);
-    write_u2(mainNameLen);
-    outFile.write(mainName, mainNameLen);
-
-    // #6: Utf8_info (tag 1), length, bytes ("([Ljava/lang/String;)V")
-    outFile.put(1);
-    write_u2(mainDescLen);
-    outFile.write(mainDesc, mainDescLen);
-
-    // #7: Utf8_info (tag 1), length, bytes ("Code")
-    outFile.put(1);
-    write_u2(codeNameLen);
-    outFile.write(codeName, codeNameLen);
-
-    // --- CLASS HEADER ---
-    write_u2(0x0021); // public, super
-    write_u2(1);      // this_class: #1
-    write_u2(3);      // super_class: #3
-
-    write_u2(0);      // interfaces_count
-    write_u2(0);      // fields_count
-
-    // --- METHODS ---
-    write_u2(1);      // methods_count
-
+    /*
     // Method: public static void main(String[] args)
     write_u2(0x0009); // access_flags: public static
     write_u2(5);      // name_index: #5 ("main")
     write_u2(6);      // descriptor_index: #6 ("([Ljava/lang/String;)V")
-    write_u2(1);      // attributes_count
+    //write_u2(1);      // attributes_count
 
-    // Attribute: Code
+    /* Attribute: Code
     write_u2(7);      // attribute_name_index: #7 ("Code")
+
     // Attribute length: 12 + code_length + exception_table_length*8 + attributes_count*6
     // For empty method: max_stack=1, max_locals=1, code_length=1 (return), exception_table_length=0, attributes_count=0
     uint32_t code_length = 1;
@@ -134,7 +102,7 @@ void ByteCodeWriter::write(const std::vector<std::string>& tokens, const std::st
     write_u2(code_attributes_count);  // attributes_count
 
     // --- CLASS ATTRIBUTES ---
-    write_u2(0); // attributes_count
-
+    //write_u2(0); // attributes_count
     outFile.close();
+    */
 }

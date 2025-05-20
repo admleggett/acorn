@@ -8,27 +8,38 @@
 #define CONSTANTCLASSINFO_H
 
 #include <memory>
-#include "byteCodeSerializable.h"
 #include "bigEndianUtil.h"
+#include "constantPoolEntry.h"
 
-class ConstantClassInfo : public ByteCodeSerializable {
+class ConstantClassInfo : public ConstantPoolEntry {
 
 public:
 
-    static constexpr uint8_t TAG = 7;
-
-    explicit ConstantClassInfo(std::string name)
-        : name(std::make_unique<std::string>(std::move(name))) {}
+    explicit ConstantClassInfo(uint16_t nameIndex)
+        : nameIndex(nameIndex) {}
 
     [[nodiscard]] std::vector<uint8_t> serialize() const override {
         std::vector<uint8_t> bytes;
-        bytes.push_back(TAG); // tag for Class
-        BigEndianUtil::appendUint16(bytes, static_cast<uint16_t>(name->size()));
+        // The tag to create a class is 07.
+        // The class constant pool entry is three bytes.
+        // One for the tag and two for an index pointing to a UTF8 entry in the constant pool.
+        bytes.push_back(getTagAsUint8_t());
+        auto nameIndexBytes = BigEndianUtil::toBigEndianBytes(nameIndex);
+        bytes.insert(bytes.end(), nameIndexBytes.begin(), nameIndexBytes.end());
         return bytes;
     }
 
+    [[nodiscard]] Tag getTag() const override {
+        return Tag::CLASS;
+    }
+
 private:
-    std::unique_ptr<std::string> name;
+    uint16_t nameIndex;
+
+
+
+
+
 };
 
 #endif //CONSTANTCLASSINFO_H

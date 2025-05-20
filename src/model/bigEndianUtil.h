@@ -28,5 +28,9 @@ public:
         appendUint16(out, static_cast<uint16_t>(str.size()));
         out.insert(out.end(), str.begin(), str.end());
     }
+
+    static std::vector<uint8_t> toBigEndianBytes(uint16_t value) {
+        return { static_cast<uint8_t>((value >> 8) & 0xFF), static_cast<uint8_t>(value & 0xFF) };
+    }
 };
 #endif //BIGENDIANUTIL_H

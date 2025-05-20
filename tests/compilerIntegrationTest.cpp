@@ -21,4 +21,7 @@ protected:
 TEST_F(CompilerIntegrationTest, CompilesWithoutThrowing) {
     Compiler compiler(std::move(scanner), std::move(writer));
     EXPECT_NO_THROW(compiler.compile("Acorn.class"));
+    //assert that the Acorn.class file exists
+    std::ifstream classFile("Acorn.class");
+    EXPECT_TRUE(classFile.good());
 }
