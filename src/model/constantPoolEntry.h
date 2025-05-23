@@ -6,11 +6,10 @@
 #ifndef CONSTANTPOOLENTRY_H
 #define CONSTANTPOOLENTRY_H
 
-#include <iostream>
 #include <vector>
 #include <string>
-#include <memory>
 #include "byteCodeSerializable.h"
+#include "bigEndianUtil.h"
 
 
 class ConstantPoolEntry : public ByteCodeSerializable {
@@ -21,6 +20,7 @@ public:
         FIELD_REF = 9,
         METHOD_REF = 10,
         STRING = 8,
+        NAME_AND_TYPE = 12,
         };
 
     virtual ~ConstantPoolEntry() = default;
@@ -30,6 +30,16 @@ public:
         return static_cast<uint8_t>(getTag());
     }
 
+protected:
+    std::vector<uint8_t> serializeWithTagAndIndices(std::initializer_list<uint16_t> indices) const {
+        std::vector<uint8_t> bytes;
+        bytes.push_back(getTagAsUint8_t());
+        for (auto idx : indices) {
+            auto idxBytes = BigEndianUtil::toBigEndianBytes(idx);
+            bytes.insert(bytes.end(), idxBytes.begin(), idxBytes.end());
+        }
+        return bytes;
+    }
 
 };
 

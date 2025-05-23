@@ -1,0 +1,96 @@
+# the class file header
+# magic number minor version major version
+cafe babe 0000 0034
+
+# constant pool size twenty
+0014
+
+#one : class at index
+0700 02
+
+#two : utf-8 bytes Acorn
+01 0005 41 63 6f 72 6e
+
+#three : class at index
+0700 04
+
+#four : utf-8 bytes java/lang/Object
+01 0010 6a 61 76 61 2f 6c 61 6e 67 2f 4f 62 6a 65 63 74
+
+#five : class at index six
+0700 06
+
+#six : utf-8 bytes java/lang/System
+0100 10  6a 61 76 61 2f 6c 61 6e 67 2f 53 79 73 74 65 6d
+
+#seven : class at index eight
+0700 08
+
+#eight : utf-8 bytes java/io/PrintStream
+0100 13  6a 61 76 61 2f 69 6f 2f 50 72 69 6e 74 53 74 72 65 61 6d
+
+#nine: field at index eight, name and type at index ten
+0900 0800 0a
+
+#ten: name and type at indexes eleven and twelve
+0c00 0b00 0c
+
+#eleven : utf-8 bytes out
+0100 03 6f 75 74
+
+#twelve : utf-8 bytes Ljava/io/PrintStream;
+0100 15 4c 6a 61 76 61 2f 69 6f 2f 50 72 69 6e 74 53 74 72 65 61 6d 3b
+
+#thirteen : method ref. Class at index eight, name and type at index fourteen
+0a00 0800 0e
+
+#fourteen : name and type at indexes fifteen and sixteen
+0c00 0f00 10
+
+#fifteen : utf-8 bytes println
+0100 07   70 72 69 6e 74 6c 6e
+
+#sixteen : utf-8 bytes ([Ljava/lang/String;)V
+0100 15   28 4c 6a 61 76 61 2f 6c 61 6e 67 2f 53 74 72 69 6e 67 3b 29 56
+
+#seventeen : utf-8 bytes main
+01 0004 6d61 696e
+
+#eightteen : utf-8 bytes ([Ljava/lang/String;)V
+01 0016 28 5b4c 6a61 7661 2f6c 616e 672f 5374 7269 6e67 3b29 56
+
+#nineteen : utf-8 bytes Code
+01 0004 436f 6465
+
+# super public class
+0021
+
+# index in constant pool of class Acorn
+0001
+
+# index in constant pool of class java/lang/Object
+0003
+
+# interface count
+0000
+
+# field count
+0000
+
+# method count
+0000
+
+# method access flags - tbc
+
+# method name index - seventeen
+
+
+# method type index - eighteen
+
+
+# tbc - code
+
+# exception table size
+
+# attributes count
+0000

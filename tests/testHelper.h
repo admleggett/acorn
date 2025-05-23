@@ -3,6 +3,7 @@
 #include <string>
 #include <sstream>
 #include <iomanip>
+#include <fstream>
 
 class TestHelper {
 public:
@@ -12,6 +13,29 @@ public:
             oss << std::hex << std::setw(2) << std::setfill('0') << (int)b;
         }
         return oss.str();
+    }
+
+    static std::vector<uint8_t> readHexTextFile(const std::string& path) {
+        std::ifstream file(path);
+        //throw error if file not found
+        if (!file) {
+            throw std::runtime_error("Could not open file: " + path);
+        }
+
+        std::vector<uint8_t> bytes;
+        std::string token;
+        while (file >> token) {
+            // Skip non-hex tokens (e.g., line numbers, colons)
+            if (token.find_first_not_of("0123456789abcdefABCDEF") != std::string::npos)
+                continue;
+            if (token.length() == 4) { // e.g., "cafe"
+                bytes.push_back(static_cast<uint8_t>(std::stoul(token.substr(0, 2), nullptr, 16)));
+                bytes.push_back(static_cast<uint8_t>(std::stoul(token.substr(2, 2), nullptr, 16)));
+            } else if (token.length() == 2) {
+                bytes.push_back(static_cast<uint8_t>(std::stoul(token, nullptr, 16)));
+            }
+        }
+        return bytes;
     }
 };
 

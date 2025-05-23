@@ -1,0 +1,36 @@
+
+#ifndef METHODINFO_H
+#define METHODINFO_H
+
+#include <vector>
+#include <memory>
+#include "byteCodeSerializable.h"
+#include "bigEndianUtil.h"
+
+class MethodInfo : public ByteCodeSerializable {
+public:
+    MethodInfo(uint16_t accessFlags, uint16_t nameIdx, uint16_t descIdx,
+               const std::vector<std::shared_ptr<ByteCodeSerializable>>& attrs)
+        : accessFlags(accessFlags), nameIndex(nameIdx), descriptorIndex(descIdx), attributes(attrs) {}
+
+    [[nodiscard]] std::vector<uint8_t> serialize() const override {
+        std::vector<uint8_t> bytes;
+        BigEndianUtil::appendUint16(bytes, accessFlags);
+        BigEndianUtil::appendUint16(bytes, nameIndex);
+        BigEndianUtil::appendUint16(bytes, descriptorIndex);
+        BigEndianUtil::appendUint16(bytes, static_cast<uint16_t>(attributes.size()));
+        for (const auto& attr : attributes) {
+            auto attrBytes = attr->serialize();
+            bytes.insert(bytes.end(), attrBytes.begin(), attrBytes.end());
+        }
+        return bytes;
+    }
+
+private:
+    uint16_t accessFlags;
+    uint16_t nameIndex;
+    uint16_t descriptorIndex;
+    std::vector<std::shared_ptr<ByteCodeSerializable>> attributes;
+};
+
+#endif //METHODINFO_H

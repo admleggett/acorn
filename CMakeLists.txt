@@ -8,6 +8,11 @@ add_executable(acornc
         src/scanner.cpp
         src/byteCodeWriter.cpp
         src/compiler.cpp
+        src/model/constantFieldInfo.h
+        src/model/constantNameAndTypeInfo.h
+        src/model/constantMethodInfo.h
+        src/model/codeAttribute.h
+        src/model/methodInfo.h
 )
 
 target_include_directories(acornc PRIVATE
@@ -33,6 +38,13 @@ add_executable(GTest
         src/scanner.cpp
         src/byteCodeWriter.cpp
         src/compiler.cpp
+        tests/classByteCodeTest.cpp
+        tests/mainTest.cpp
+        src/model/constantFieldInfo.h
+        src/model/constantNameAndTypeInfo.h
+        src/model/constantMethodInfo.h
+        src/model/codeAttribute.h
+        src/model/methodInfo.h
 )
 target_include_directories(GTest PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/src
@@ -45,3 +57,4 @@ target_link_libraries(GTest gtest_main)
 add_test(NAME CompilerIntegrationTest COMMAND GTest)
 add_test(NAME ConstantPoolTest COMMAND GTest)
 add_test(NAME ClassHeaderInfoTest COMMAND GTest)
+add_test(NAME ClassByteCodeTest COMMAND GTest)
