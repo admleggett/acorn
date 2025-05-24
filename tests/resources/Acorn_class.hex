@@ -2,7 +2,7 @@
 # magic number minor version major version
 cafe babe 0000 0034
 
-# constant pool size twenty
+# constant pool size twenty (always one bigger than the number of entries)
 0014
 
 #one : class at index
@@ -78,14 +78,16 @@ cafe babe 0000 0034
 0000
 
 # method count
-0000
+0001
 
 # method access flags - tbc
+0009
 
 # method name index - seventeen
-
+0011
 
 # method type index - eighteen
+0012
 
 
 # tbc - code

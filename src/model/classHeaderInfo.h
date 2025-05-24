@@ -18,12 +18,11 @@ public:
         uint16_t super_class,
         uint16_t interfaces_count,
         uint16_t fields_count,
-        uint16_t methods_count,
-        uint16_t attributes_count
+        uint16_t methods_count
     )
         : flags_(flags), this_class_(this_class), super_class_(super_class),
           interfaces_count_(interfaces_count), fields_count_(fields_count),
-          methods_count_(methods_count), attributes_count_(attributes_count) {}
+          methods_count_(methods_count) {}
 
     [[nodiscard]] std::vector<uint8_t> serialize() const override {
         std::vector<uint8_t> bytes;
@@ -33,7 +32,6 @@ public:
         BigEndianUtil::appendUint16(bytes, interfaces_count_);
         BigEndianUtil::appendUint16(bytes, fields_count_);
         BigEndianUtil::appendUint16(bytes, methods_count_);
-        BigEndianUtil::appendUint16(bytes, attributes_count_);
         return bytes;
     }
 private:
@@ -43,7 +41,6 @@ private:
     uint16_t interfaces_count_;
     uint16_t fields_count_;
     uint16_t methods_count_;
-    uint16_t attributes_count_;
 };
 
 

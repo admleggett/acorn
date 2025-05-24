@@ -63,13 +63,20 @@ void ByteCodeWriter::write(const std::vector<std::string>& tokens, const std::st
         3,      // super_class: #3 (java/lang/Object)
         0,      // interfaces_count
         0,      // fields_count
-        0,      // methods_count
-        0       // attributes_count
+        0     // methods_count
+    );
+
+    MethodInfo mainMethod(
+        0x0009, // access_flags: public static
+        5,      // name_index: #5 ("main")
+        6,      // descriptor_index: #6 ("([Ljava/lang/String;)V")
+        {}      // attributes: empty for now
     );
 
     ClassByteCode classByteCode(std::make_shared<ClassFileHeader>(header),
         std::make_shared<ConstantPool>(constantPool),
-        std::make_shared<ClassHeaderInfo>(classHeader));
+        std::make_shared<ClassHeaderInfo>(classHeader),
+        std::make_shared<MethodInfo>(mainMethod));
 
     write(classByteCode);
 

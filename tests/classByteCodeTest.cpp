@@ -23,11 +23,16 @@ TEST(ClassByteCodeTest, SerializeProducesNonEmptyOutput) {
         3,      // super_class
         0,      // interfaces_count
         0,      // fields_count
-        0,      // methods_count
-        0       // attributes_count
+        1      // methods_count
+    );
+    auto methodInfo = std::make_shared<MethodInfo>(
+        0x0001, // access_flags
+        2,      // name_index
+        3,      // descriptor_index
+        std::vector<std::shared_ptr<ByteCodeSerializable>>()
     );
 
-    ClassByteCode byteCode(fileHeader, constantPool, classHeader);
+    ClassByteCode byteCode(fileHeader, constantPool, classHeader, methodInfo);
     std::vector<uint8_t> bytes = byteCode.serialize();
 
     EXPECT_FALSE(bytes.empty());
@@ -86,13 +91,20 @@ TEST(ClassByteCodeTest, SerializeMatchesExpectedHex) {
         3,      // super_class: #3 (java/lang/Object)
         0,      // interfaces_count
         0,      // fields_count
-        0,      // methods_count
-        0       // attributes_count
+        1     // methods_count
+    );
+
+    MethodInfo mainMethod(
+        0x0009, // access_flags: public static
+        17,     // name_index: #17 ("main")
+        18,     // descriptor_index: #18 ("([Ljava/lang/String;)V")
+        {}      // attributes: empty for now
     );
 
     ClassByteCode byteCode(std::make_shared<ClassFileHeader>(header),
     std::make_shared<ConstantPool>(constantPool),
-    std::make_shared<ClassHeaderInfo>(classHeader));
+    std::make_shared<ClassHeaderInfo>(classHeader),
+    std::make_shared<MethodInfo>(mainMethod));
 
     std::vector<uint8_t> bytes = byteCode.serialize();
     auto filePath = g_testArgs[1] + "/Acorn_class.hex"; // Path to the expected hex file

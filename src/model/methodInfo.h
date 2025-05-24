@@ -18,10 +18,15 @@ public:
         BigEndianUtil::appendUint16(bytes, accessFlags);
         BigEndianUtil::appendUint16(bytes, nameIndex);
         BigEndianUtil::appendUint16(bytes, descriptorIndex);
-        BigEndianUtil::appendUint16(bytes, static_cast<uint16_t>(attributes.size()));
-        for (const auto& attr : attributes) {
-            auto attrBytes = attr->serialize();
-            bytes.insert(bytes.end(), attrBytes.begin(), attrBytes.end());
+        // if attributes not empty then serialize them
+        // and append the count of attributes
+        if (!attributes.empty())
+        {
+            BigEndianUtil::appendUint16(bytes, static_cast<uint16_t>(attributes.size()));
+            for (const auto& attr : attributes) {
+                auto attrBytes = attr->serialize();
+                bytes.insert(bytes.end(), attrBytes.begin(), attrBytes.end());
+            }
         }
         return bytes;
     }
