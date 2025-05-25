@@ -6,7 +6,9 @@
 #include "model/constantUtf8Info.h"
 #include <memory>
 
+#include "codeAttribute.h"
 #include "constantFieldInfo.h"
+#include "constantIntegerInfo.h"
 #include "constantMethodInfo.h"
 #include "constantNameAndTypeInfo.h"
 #include "testHelper.h"
@@ -52,17 +54,20 @@ TEST(ClassByteCodeTest, SerializeMatchesExpectedHex) {
     auto javaLangSystemName = std::make_shared<ConstantUtf8Info>("java/lang/System");
     auto javaIoPrintStreamInfo = std::make_shared<ConstantClassInfo>(8);
     auto javaIoPrintStreamName = std::make_shared<ConstantUtf8Info>("java/io/PrintStream");
-    auto outFieldRef = std::make_shared<ConstantFieldInfo>(8, 10);
+    auto outFieldRef = std::make_shared<ConstantFieldInfo>(5, 10);
     auto nameAndType = std::make_shared<ConstantNameAndTypeInfo>(11, 12);
     auto outFieldName = std::make_shared<ConstantUtf8Info>("out");
     auto outFieldDesc = std::make_shared<ConstantUtf8Info>("Ljava/io/PrintStream;");
-    auto methodRef = std::make_shared<ConstantMethodInfo>(8, 14);
+    auto methodRef = std::make_shared<ConstantMethodInfo>(7, 14);
     auto methodNameAndType = std::make_shared<ConstantNameAndTypeInfo>(15, 16);
     auto methodName = std::make_shared<ConstantUtf8Info>("println");
-    auto methodType = std::make_shared<ConstantUtf8Info>("(Ljava/lang/String;)V");
+    auto methodType = std::make_shared<ConstantUtf8Info>("(I)V");
     auto mainName = std::make_shared<ConstantUtf8Info>("main");
     auto mainDesc = std::make_shared<ConstantUtf8Info>("([Ljava/lang/String;)V");
     auto codeName = std::make_shared<ConstantUtf8Info>("Code");
+    auto intConstant = std::make_shared<ConstantIntegerInfo>(10);
+    auto javaLangSystemOutput = std::make_shared<ConstantClassInfo>(8);
+
 
     ConstantPool constantPool;
     constantPool.addEntry(classInfo); // #1
@@ -84,6 +89,8 @@ TEST(ClassByteCodeTest, SerializeMatchesExpectedHex) {
     constantPool.addEntry(mainName); // #17
     constantPool.addEntry(mainDesc); // #18
     constantPool.addEntry(codeName); // #19
+    constantPool.addEntry(intConstant); // #20
+    constantPool.addEntry(javaLangSystemOutput); // #21
 
     ClassHeaderInfo classHeader(
         0x0021, // flags: public, super
@@ -94,11 +101,23 @@ TEST(ClassByteCodeTest, SerializeMatchesExpectedHex) {
         1     // methods_count
     );
 
+    CodeAttribute codeAttribute(
+        19, // name_index: #19 ("Code")
+        2,  // max_stack: 2 (for getstatic + ldc)
+        1,  // max_locals: 1 (for main's String[] arg)
+        {
+            0xb2, 0x00, 0x09, // getstatic #9
+            0x12, 0x14,       // ldc #20
+            0xb6, 0x00, 0x0d, // invokevirtual #13
+            0xb1, 0X00              // return
+        }
+    );
+
     MethodInfo mainMethod(
         0x0009, // access_flags: public static
         17,     // name_index: #17 ("main")
         18,     // descriptor_index: #18 ("([Ljava/lang/String;)V")
-        {}      // attributes: empty for now
+        {std::make_shared<CodeAttribute>(codeAttribute)}      // attributes
     );
 
     ClassByteCode byteCode(std::make_shared<ClassFileHeader>(header),

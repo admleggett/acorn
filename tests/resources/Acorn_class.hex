@@ -1,9 +1,9 @@
 # the class file header
 # magic number minor version major version
-cafe babe 0000 0034
+cafe babe 0000 0032
 
-# constant pool size twenty (always one bigger than the number of entries)
-0014
+# constant pool size twenty two (always one bigger than the number of entries)
+0016
 
 #one : class at index
 0700 02
@@ -26,11 +26,11 @@ cafe babe 0000 0034
 #seven : class at index eight
 0700 08
 
-#eight : utf-8 bytes java/io/PrintStream
+# eight : utf-8 bytes java/io/PrintStream
 0100 13  6a 61 76 61 2f 69 6f 2f 50 72 69 6e 74 53 74 72 65 61 6d
 
-#nine: field at index eight, name and type at index ten
-0900 0800 0a
+#nine: field at index seven, name and type at index ten
+0900 0500 0a
 
 #ten: name and type at indexes eleven and twelve
 0c00 0b00 0c
@@ -41,17 +41,17 @@ cafe babe 0000 0034
 #twelve : utf-8 bytes Ljava/io/PrintStream;
 0100 15 4c 6a 61 76 61 2f 69 6f 2f 50 72 69 6e 74 53 74 72 65 61 6d 3b
 
-#thirteen : method ref. Class at index eight, name and type at index fourteen
-0a00 0800 0e
+#thirteen : method ref. Class at index seven, name and type at index fourteen
+0a00 0700 0e
 
 #fourteen : name and type at indexes fifteen and sixteen
 0c00 0f00 10
 
 #fifteen : utf-8 bytes println
-0100 07   70 72 69 6e 74 6c 6e
+01 0007 70 72 69 6e 74 6c 6e
 
-#sixteen : utf-8 bytes ([Ljava/lang/String;)V
-0100 15   28 4c 6a 61 76 61 2f 6c 61 6e 67 2f 53 74 72 69 6e 67 3b 29 56
+#sixteen : utf-8 bytes (I)V
+01 0004 28 49 29 56
 
 #seventeen : utf-8 bytes main
 01 0004 6d61 696e
@@ -61,6 +61,13 @@ cafe babe 0000 0034
 
 #nineteen : utf-8 bytes Code
 01 0004 436f 6465
+
+# twenty : integer ten
+03 0000000a
+
+# twenty one : class entry for System.out
+0700 08
+
 
 # super public class
 0021
@@ -80,7 +87,7 @@ cafe babe 0000 0034
 # method count
 0001
 
-# method access flags - tbc
+# method access flags
 0009
 
 # method name index - seventeen
@@ -90,9 +97,25 @@ cafe babe 0000 0034
 0012
 
 
-# tbc - code
+# code
 
-# exception table size
+0001                # attributes_count
+0013                # code constant pool index
+00000016            # attribute_length
+0002                # max_stack
+0001                # max_locals
+0000000a            # code_length
+
+# The actual machine instructions:
+b2 00 09            # getstatic #nine (System.out)
+12 14               # ldc #twenty (int 10)
+b6 00 0d            # invokevirtual #thirteen (println)
+b1 00                 # return
+
+0000                # exception_table_length
+0000                # attributes_count (in Code)
+
+
 
 # attributes count
 0000

@@ -13,7 +13,7 @@
 class ClassFileHeader : public ByteCodeSerializable {
 public:
     explicit ClassFileHeader(
-            uint16_t minor_version = 0, uint16_t major_version = 52)
+            uint16_t minor_version = 0, uint16_t major_version = 0x0032) // Default to Java 6
         : minor_version_(minor_version), major_version_(major_version) {}
 
     [[nodiscard]] std::vector<uint8_t> serialize() const override {

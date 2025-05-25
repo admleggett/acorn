@@ -7,6 +7,7 @@
 #include "classHeaderInfo.h"
 #include <vector>
 #include <cstdint>
+#include <iostream>
 #include <memory>
 #include "bigEndianUtil.h"
 #include "methodInfo.h"
@@ -35,6 +36,13 @@ public:
 
         //append the attributes count
         BigEndianUtil::appendUint16(bytes, attributes_count_);
+
+        //if debug print to std out as hex
+        //if (debug) {
+        std::cout << "Serialized ClassByteCode: ";
+        printHex(bytes);
+        //}
+
         return bytes;
     }
 private:

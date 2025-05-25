@@ -28,6 +28,12 @@ public:
             // Skip non-hex tokens (e.g., line numbers, colons)
             if (token.find_first_not_of("0123456789abcdefABCDEF") != std::string::npos)
                 continue;
+            if (token.length() == 8){
+                // 32-bit hex (e.g., "0000000d")
+               for (int i = 0; i < 8; i += 2) {
+                   bytes.push_back(static_cast<uint8_t>(std::stoul(token.substr(i, 2), nullptr, 16)));
+               }
+            }
             if (token.length() == 4) { // e.g., "cafe"
                 bytes.push_back(static_cast<uint8_t>(std::stoul(token.substr(0, 2), nullptr, 16)));
                 bytes.push_back(static_cast<uint8_t>(std::stoul(token.substr(2, 2), nullptr, 16)));

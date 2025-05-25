@@ -15,6 +15,14 @@ class ByteCodeSerializable {
 public:
     virtual ~ByteCodeSerializable() = default;
     [[nodiscard]] virtual std::vector<uint8_t> serialize() const = 0;
+
+    //helper function to debug a byte array as hex
+    static void printHex(const std::vector<uint8_t>& bytes) {
+        for (const auto& byte : bytes) {
+            printf("%02x ", byte);
+        }
+        printf("\n");
+    }
 };
 
 #endif //BYTECODESERIALIZABLE_H

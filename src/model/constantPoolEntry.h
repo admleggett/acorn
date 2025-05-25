@@ -21,6 +21,7 @@ public:
         METHOD_REF = 10,
         STRING = 8,
         NAME_AND_TYPE = 12,
+        INTEGER = 3
         };
 
     virtual ~ConstantPoolEntry() = default;

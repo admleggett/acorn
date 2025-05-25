@@ -3,6 +3,12 @@
 #include <vector>
 #include <cstdint>
 #include <memory>
+
+#include "codeAttribute.h"
+#include "constantFieldInfo.h"
+#include "constantIntegerInfo.h"
+#include "constantMethodInfo.h"
+#include "constantNameAndTypeInfo.h"
 #include "model/classFileHeader.h"
 #include "model/constantClassInfo.h"
 #include "model/constantUtf8Info.h"
@@ -20,17 +26,6 @@ void ByteCodeWriter::write(const std::vector<std::string>& tokens, const std::st
         throw std::runtime_error("Could not open output file for writing.");
     }
 
-    // Helper lambda to write big-endian values
-    auto write_u2 = [&](uint16_t v) {
-        outFile.put((v >> 8) & 0xFF);
-        outFile.put(v & 0xFF);
-    };
-    auto write_u4 = [&](uint32_t v) {
-        outFile.put((v >> 24) & 0xFF);
-        outFile.put((v >> 16) & 0xFF);
-        outFile.put((v >> 8) & 0xFF);
-        outFile.put(v & 0xFF);
-    };
     //lambda to write a byteCodeSerializable object
     auto write = [&](const ByteCodeSerializable& entry) {
         auto bytes = entry.serialize();
@@ -41,21 +36,50 @@ void ByteCodeWriter::write(const std::vector<std::string>& tokens, const std::st
 
     // create a constant pool with entries for the classname and the superclass
     auto classInfo = std::make_shared<ConstantClassInfo>(2);
-    auto className = std::make_shared<ConstantUtf8Info>(className_);
+    auto className = std::make_shared<ConstantUtf8Info>("Acorn");
     auto superClassInfo = std::make_shared<ConstantClassInfo>(4);
     auto superClassName = std::make_shared<ConstantUtf8Info>("java/lang/Object");
+    auto javaLangSystemInfo = std::make_shared<ConstantClassInfo>(6);
+    auto javaLangSystemName = std::make_shared<ConstantUtf8Info>("java/lang/System");
+    auto javaIoPrintStreamInfo = std::make_shared<ConstantClassInfo>(8);
+    auto javaIoPrintStreamName = std::make_shared<ConstantUtf8Info>("java/io/PrintStream");
+    auto outFieldRef = std::make_shared<ConstantFieldInfo>(5, 10);
+    auto nameAndType = std::make_shared<ConstantNameAndTypeInfo>(11, 12);
+    auto outFieldName = std::make_shared<ConstantUtf8Info>("out");
+    auto outFieldDesc = std::make_shared<ConstantUtf8Info>("Ljava/io/PrintStream;");
+    auto methodRef = std::make_shared<ConstantMethodInfo>(7, 14);
+    auto methodNameAndType = std::make_shared<ConstantNameAndTypeInfo>(15, 16);
+    auto methodName = std::make_shared<ConstantUtf8Info>("println");
+    auto methodType = std::make_shared<ConstantUtf8Info>("(I)V");
     auto mainName = std::make_shared<ConstantUtf8Info>("main");
     auto mainDesc = std::make_shared<ConstantUtf8Info>("([Ljava/lang/String;)V");
     auto codeName = std::make_shared<ConstantUtf8Info>("Code");
+    auto intConstant = std::make_shared<ConstantIntegerInfo>(10);
+    auto javaLangSystemOutput = std::make_shared<ConstantClassInfo>(8);
+
 
     ConstantPool constantPool;
     constantPool.addEntry(classInfo); // #1
     constantPool.addEntry(className); // #2
     constantPool.addEntry(superClassInfo); // #3
     constantPool.addEntry(superClassName); // #4
-    constantPool.addEntry(mainName); // #5
-    constantPool.addEntry(mainDesc); // #6
-    constantPool.addEntry(codeName); // #7
+    constantPool.addEntry(javaLangSystemInfo); // #5
+    constantPool.addEntry(javaLangSystemName); // #6
+    constantPool.addEntry(javaIoPrintStreamInfo); // #7
+    constantPool.addEntry(javaIoPrintStreamName); // #8
+    constantPool.addEntry(outFieldRef); // #9
+    constantPool.addEntry(nameAndType); // #10
+    constantPool.addEntry(outFieldName); // #11
+    constantPool.addEntry(outFieldDesc); // #12
+    constantPool.addEntry(methodRef); // #13
+    constantPool.addEntry(methodNameAndType); // #14
+    constantPool.addEntry(methodName); // #15
+    constantPool.addEntry(methodType); // #16
+    constantPool.addEntry(mainName); // #17
+    constantPool.addEntry(mainDesc); // #18
+    constantPool.addEntry(codeName); // #19
+    constantPool.addEntry(intConstant); // #20
+    constantPool.addEntry(javaLangSystemOutput); // #21
 
     ClassHeaderInfo classHeader(
         0x0021, // flags: public, super
@@ -63,53 +87,37 @@ void ByteCodeWriter::write(const std::vector<std::string>& tokens, const std::st
         3,      // super_class: #3 (java/lang/Object)
         0,      // interfaces_count
         0,      // fields_count
-        0     // methods_count
+        1     // methods_count
+    );
+
+    CodeAttribute codeAttribute(
+        19, // name_index: #19 ("Code")
+        2,  // max_stack: 2 (for getstatic + ldc)
+        1,  // max_locals: 1 (for main's String[] arg)
+        {
+            0xb2, 0x00, 0x09, // getstatic #9
+            0x12, 0x14,       // ldc #20
+            0xb6, 0x00, 0x0d, // invokevirtual #13
+            0xb1, 0X00              // return
+        }
     );
 
     MethodInfo mainMethod(
         0x0009, // access_flags: public static
-        5,      // name_index: #5 ("main")
-        6,      // descriptor_index: #6 ("([Ljava/lang/String;)V")
-        {}      // attributes: empty for now
+        17,     // name_index: #17 ("main")
+        18,     // descriptor_index: #18 ("([Ljava/lang/String;)V")
+        {std::make_shared<CodeAttribute>(codeAttribute)}      // attributes
     );
 
-    ClassByteCode classByteCode(std::make_shared<ClassFileHeader>(header),
-        std::make_shared<ConstantPool>(constantPool),
-        std::make_shared<ClassHeaderInfo>(classHeader),
-        std::make_shared<MethodInfo>(mainMethod));
+    ClassByteCode byteCode(std::make_shared<ClassFileHeader>(header),
+    std::make_shared<ConstantPool>(constantPool),
+    std::make_shared<ClassHeaderInfo>(classHeader),
+    std::make_shared<MethodInfo>(mainMethod));
 
-    write(classByteCode);
-
-    /*
-    // Method: public static void main(String[] args)
-    write_u2(0x0009); // access_flags: public static
-    write_u2(5);      // name_index: #5 ("main")
-    write_u2(6);      // descriptor_index: #6 ("([Ljava/lang/String;)V")
-    //write_u2(1);      // attributes_count
-
-    /* Attribute: Code
-    write_u2(7);      // attribute_name_index: #7 ("Code")
-
-    // Attribute length: 12 + code_length + exception_table_length*8 + attributes_count*6
-    // For empty method: max_stack=1, max_locals=1, code_length=1 (return), exception_table_length=0, attributes_count=0
-    uint32_t code_length = 1;
-    uint16_t max_stack = 1;
-    uint16_t max_locals = 1;
-    uint16_t exception_table_length = 0;
-    uint16_t code_attributes_count = 0;
-    uint32_t attr_len = 12 + code_length;
-
-    write_u4(attr_len);         // attribute_length
-    write_u2(max_stack);        // max_stack
-    write_u2(max_locals);       // max_locals
-    write_u4(code_length);      // code_length
-    outFile.put(0xb1);          // return (opcode for 'return' in void method)
-    write_u2(exception_table_length); // exception_table_length
-    // (no exception table)
-    write_u2(code_attributes_count);  // attributes_count
-
-    // --- CLASS ATTRIBUTES ---
-    //write_u2(0); // attributes_count
+    write(byteCode);
     outFile.close();
-    */
+    if (!outFile) {
+        throw std::runtime_error("Error writing to output file.");
+    }
+
 }
