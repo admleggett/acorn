@@ -35,6 +35,7 @@ add_executable(GTest
         src/scanner.cpp
         src/byteCodeWriter.cpp
         src/compiler.cpp
+        tests/scannerTest.cpp
 )
 target_include_directories(GTest PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/src
@@ -48,3 +49,4 @@ add_test(NAME CompilerIntegrationTest COMMAND GTest)
 add_test(NAME ConstantPoolTest COMMAND GTest)
 add_test(NAME ClassHeaderInfoTest COMMAND GTest)
 add_test(NAME ClassByteCodeTest COMMAND GTest)
+add_test(NAME ScannerTest COMMAND GTest)

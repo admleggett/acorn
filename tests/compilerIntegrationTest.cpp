@@ -4,12 +4,16 @@
 #include "byteCodeWriter.h"
 #include "compiler.h"
 
+// Declare the global variable
+extern std::vector<std::string> g_testArgs;
+
 class CompilerIntegrationTest : public ::testing::Test {
+
 protected:
     void SetUp() override {
         // Prepare a simple source string for testing
-        source = "print 10";
-        scanner = std::make_unique<Scanner>(source);
+        auto filePath = g_testArgs[1] + "/valid.aco";
+        scanner = std::make_unique<Scanner>(filePath);
         writer = std::make_unique<ByteCodeWriter>("Acorn");
     }
 

@@ -7,7 +7,7 @@
 class Scanner {
 public:
     explicit Scanner(std::string source);
-    std::vector<std::string> tokenize();
+    std::vector<std::string> tokenize() const;
 private:
     std::string source_;
 };

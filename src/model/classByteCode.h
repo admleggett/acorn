@@ -39,8 +39,8 @@ public:
 
         //if debug print to std out as hex
         //if (debug) {
-        std::cout << "Serialized ClassByteCode: ";
-        printHex(bytes);
+        //std::cout << "Serialized ClassByteCode: ";
+        //printHex(bytes);
         //}
 
         return bytes;

@@ -54,7 +54,11 @@ void ByteCodeWriter::write(const std::vector<std::string>& tokens, const std::st
     auto mainName = std::make_shared<ConstantUtf8Info>("main");
     auto mainDesc = std::make_shared<ConstantUtf8Info>("([Ljava/lang/String;)V");
     auto codeName = std::make_shared<ConstantUtf8Info>("Code");
-    auto intConstant = std::make_shared<ConstantIntegerInfo>(10);
+
+    //get the 2nd token which should be the integer constant to print
+    auto intValue = std::stoi(tokens[1]);
+
+    auto intConstant = std::make_shared<ConstantIntegerInfo>(intValue);
     auto javaLangSystemOutput = std::make_shared<ConstantClassInfo>(8);
 
 
