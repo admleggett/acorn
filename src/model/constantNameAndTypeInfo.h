@@ -1,3 +1,8 @@
+/**
+ * @file constantNameAndTypeInfo.h
+ * @brief Header file for the ConstantNameAndTypeInfo class.
+ * @details This class represents a name and type entry in the constant pool of a Java class file.
+*/
 #ifndef CONSTANTNAMEANDTYPEINFO_H
 #define CONSTANTNAMEANDTYPEINFO_H
 
@@ -18,6 +23,11 @@ public:
     [[nodiscard]] Tag getTag() const override
     {
         return Tag::NAME_AND_TYPE;
+    }
+
+    std::string key() const override
+    {
+        return tagToString(getTag()) + ":" + std::to_string(nameIndex) + ":" + std::to_string(typeIndex);
     }
 
 private:

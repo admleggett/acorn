@@ -26,6 +26,7 @@ public:
 
     virtual ~ConstantPoolEntry() = default;
     virtual Tag getTag() const = 0;
+    virtual std::string key() const = 0;
 
     uint8_t getTagAsUint8_t() const {
         return static_cast<uint8_t>(getTag());
@@ -40,6 +41,19 @@ protected:
             bytes.insert(bytes.end(), idxBytes.begin(), idxBytes.end());
         }
         return bytes;
+    }
+
+    static std::string tagToString(const Tag tag) {
+        switch (tag) {
+            case Tag::UTF8: return "UTF8";
+            case Tag::CLASS: return "CLASS";
+            case Tag::FIELD_REF: return "FIELD_REF";
+            case Tag::METHOD_REF: return "METHOD_REF";
+            case Tag::STRING: return "STRING";
+            case Tag::NAME_AND_TYPE: return "NAME_AND_TYPE";
+            case Tag::INTEGER: return "INTEGER";
+            default: return "UNKNOWN";
+        }
     }
 
 };

@@ -1,3 +1,10 @@
+/**
+ * @file classByteCode.h
+ * @brief This file contains the definition of the ClassByteCode class.
+ * @details ClassByteCode is a concrete implementation of ByteCodeSerializable that represents a Java class file's bytecode.
+ * It includes all constituent parts of a class file, such as the class file header, constant pool, class header info, and method info.
+ *
+ */
 #ifndef CLASSBYTECODE_H
 #define CLASSBYTECODE_H
 

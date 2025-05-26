@@ -1,4 +1,9 @@
-// constantIntegerInfo.h
+/**
+ * @file codeAttribute.h
+ * @brief This file contains the definition of the ConstantIntegerInfo class.
+ * @details The ConstantIntegerInfo class represents an integer constant in the constant pool of a Java class file.
+ *
+ */
 #ifndef CONSTANTINTEGERINFO_H
 #define CONSTANTINTEGERINFO_H
 
@@ -18,6 +23,10 @@ public:
     }
     Tag getTag() const override {
         return Tag::INTEGER;
+    }
+
+    std::string key() const override {
+        return tagToString(getTag()) + ":" + std::to_string(value_);
     }
 
 private:

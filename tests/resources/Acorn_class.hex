@@ -1,121 +1,213 @@
-# the class file header
-# magic number minor version major version
-cafe babe 0000 0032
+###############################################
+# Class file header
+###############################################
 
-# constant pool size twenty two (always one bigger than the number of entries)
-0016
+cafe babe # magic number
+0000 0032 # minor version 0, major version 50 (Java 6)
 
-#one : class at index
+
+###########################################
+# Start of Constant Pool
+###########################################
+
+# constant pool size = 21 (always one bigger than the number of entries)
+0015
+
+###############################################
+#1 : this class 'Acorn' at index #2
+# 0700 = class tag, 02 = index in constant pool
+###############################################
 0700 02
 
-#two : utf-8 bytes Acorn
+################################################################
+#2 : the class name - utf-8 bytes Acorn
+# 0100 = utf-8 tag, 05 = size (in bytes),  41 63 6f 72 6e = Acorn
+#################################################################
 01 0005 41 63 6f 72 6e
 
-#three : class at index
+###############################################
+#3 : super class at index #4
+# 0700 = class tag, 04 = index in constant pool
+###############################################
 0700 04
 
-#four : utf-8 bytes java/lang/Object
+############################################################################################################
+#4 : the super class name utf-8 bytes java/lang/Object
+# 0100 utf-8 tag, 10 = size (in bytes), 6a 61 76 61 2f 6c 61 6e 67 2f 4f 62 6a 65 63 74 = java/lang/Object
+############################################################################################################
 01 0010 6a 61 76 61 2f 6c 61 6e 67 2f 4f 62 6a 65 63 74
 
-#five : class at index six
+###############################################################
+#5 : class at index #6 java/lang/System - required for System.out.println
+# 0700 = class, 06 = index
+###############################################################
 0700 06
 
-#six : utf-8 bytes java/lang/System
+############################################################################################################
+#6 : utf-8 bytes java/lang/System
+# 0100 = utf-8 tag, 0c = size (in bytes), 6a 61 76 61 2f 6c 61 6e 67 2f 53 79 73 74 65 6d = java/lang/System
+############################################################################################################
 0100 10  6a 61 76 61 2f 6c 61 6e 67 2f 53 79 73 74 65 6d
 
-#seven : class at index eight
+#####################################################################
+#7 : class at index #8 java/io/PrintStream - required for out.println
+# 0700 = class, 08 = index
+#####################################################################
 0700 08
 
-# eight : utf-8 bytes java/io/PrintStream
+########################################################################################################################
+#8 : utf-8 bytes java/io/PrintStream
+# 0100 = utf-8 tag, 0f = size (in bytes), 6a 61 76 61 2f 69 6f 2f 50 72 69 6e 74 53 74 72 65 61 6d = java/io/PrintStream
+########################################################################################################################
 0100 13  6a 61 76 61 2f 69 6f 2f 50 72 69 6e 74 53 74 72 65 61 6d
 
-#nine: field at index seven, name and type at index ten
+##########################################################################################################
+#9: fieldRef. Class at index 5 (System), name and type at index 10 (out)
+# 0a00 = fieldref tag, 05 = index in constant pool of class, 0a = index in constant pool of name and type
+##########################################################################################################
 0900 0500 0a
 
-#ten: name and type at indexes eleven and twelve
+##########################################################################################################
+#10: name and type at indexes 11 and 12
+# 0c00 = name and type tag, 0b = index in constant pool of name, 0c = index in constant pool of type
+##########################################################################################################
 0c00 0b00 0c
 
-#eleven : utf-8 bytes out
+##########################################################################################################
+#11 : utf-8 bytes out
+# 01 = utf-8 tag, 03 = size (in bytes), 6f 75 74 = out
+##########################################################################################################
 0100 03 6f 75 74
 
-#twelve : utf-8 bytes Ljava/io/PrintStream;
+##########################################################################################################
+#12 : utf-8 bytes reference to PrintStream
+# 01 = utf-8 tag, 0c = size (in bytes), 28 4c 6a 61 76 61 2f 69 6f 2f 50 72 69 6e 74 53 74 72 65 61 6d 3b = (Ljava/io/PrintStream;)
+###########################################################################################################
 0100 15 4c 6a 61 76 61 2f 69 6f 2f 50 72 69 6e 74 53 74 72 65 61 6d 3b
 
-#thirteen : method ref. Class at index seven, name and type at index fourteen
+##########################################################################################################
+#13 : method ref. Class at index 7 (PrintStream), name and type at index 14 (println)
+# 0a00 = methodref tag, 07 = index in constant pool of class, 0e = index in constant pool of name and type
+##########################################################################################################
 0a00 0700 0e
 
-#fourteen : name and type at indexes fifteen and sixteen
+##########################################################################################################
+#14 : name and type at indexes 15 and 16
+# 0c00 = name and type tag, 0d = index in constant pool of name, 0f = index in constant pool of type
+##########################################################################################################
 0c00 0f00 10
 
-#fifteen : utf-8 bytes println
+##########################################################################################################
+#15 : utf-8 bytes println
+# 01 = utf-8 tag, 07 = size (in bytes), 70 72 69 6e 74 6c 6e = println
+##########################################################################################################
 01 0007 70 72 69 6e 74 6c 6e
 
-#sixteen : utf-8 bytes (I)V
+##########################################################################################################
+#16 : utf-8 bytes (I)V (int parameter, void return type)
+# 01 = utf-8 tag, 05 = size (in bytes), 28 49 29 56 = (I)V
+##########################################################################################################
 01 0004 28 49 29 56
 
-#seventeen : utf-8 bytes main
+##########################################################################################################
+#17 : utf-8 bytes main
+# 01 = utf-8 tag, 05 = size (in bytes), 6d 61 69 6e = main
+##########################################################################################################
 01 0004 6d61 696e
 
-#eightteen : utf-8 bytes ([Ljava/lang/String;)V
+###########################################################################################################
+#18 : utf-8 bytes ([Ljava/lang/String;)V
+# 01 = utf-8 tag, 16 = size (in bytes), 28 5b 4c 6a 61 76 61 2f 6c 61 6e 67 2f 53 74 72 69 6e 67 3b 29 56
+#  This represents an array of Strings as the parameter type and void as the return type.
+############################################################################################################
 01 0016 28 5b4c 6a61 7661 2f6c 616e 672f 5374 7269 6e67 3b29 56
 
-#nineteen : utf-8 bytes Code
+##########################################################################################################
+#19 : utf-8 bytes Code
+# 01 = utf-8 tag, 04 = size (in bytes), 43 6f 64 65 = Code
+##########################################################################################################
 01 0004 436f 6465
 
-# twenty : integer ten
+##########################################################################################################
+#20 : integer ten
+# 03 = integer tag, 00 = size (in bytes), 0000000a = value (10)
+##########################################################################################################
 03 0000000a
 
-# twenty one : class entry for System.out
-0700 08
+##########################################################################################################
+# End of constant pool
+##########################################################################################################
 
 
-# super public class
-0021
+###########################################
+# Class attributes
+###########################################
 
-# index in constant pool of class Acorn
-0001
+0021                # access flags 0021 = public (0010) + super (0020)
 
-# index in constant pool of class java/lang/Object
-0003
+0001                # index in constant pool of class Acorn
 
-# interface count
-0000
+0003                # index in constant pool of class java/lang/Object
 
-# field count
-0000
+0000                # interfaces count (Acorn does not implement any interfaces)
 
-# method count
-0001
+0000                # fields count (Acorn does not have any fields)
 
-# method access flags
-0009
+0001                # method count - single method main
 
-# method name index - seventeen
-0011
+0009                # method access flags 0009 = public (0010) + static (0008)
 
-# method type index - eighteen
-0012
+0011                # method name index in constant pool - main
+
+0012                # method descriptor (array of Strings as parameter, void return type) in constant pool
+
+#######################################################################
+# Finally - the code!
+# In the JVM specification, this is referred to as the Code attribute.
+#######################################################################
+
+0001                # attributes_count : 1 attribute (Code)
+
+0013                # the code constant pool index
+
+00000016            # attribute_length : 16 bytes of code. Calculated as the sum of the lengths of the fields in the Code attribute.
+                    # This includes the length of the code itself, the max_stack, max_locals, exception_table_length, and attributes_count.
+                    # Is calculated as follows:
+                    # code_length (10) + max_stack (2) + max_locals (1) + exception_table_length (0) + attributes_count (0) = 16 bytes
+
+0002                # max_stack (maximum stack size needed for this method - in this case, 2 for the println call)
+
+0001                # max_locals (maximum number of local variables - in this case, 1 for the main method's args parameter)
+
+0000000a            # code_length : 10 bytes of code. Note that this is the length of the bytecode instructions, not the total length of the Code attribute.
+                    # Is calculated as follows:
+                    # 2 (getstatic) + 2 (ldc) + 2 (invokevirtual) + 1 (return) = 7 bytes of instructions
+                    # plus 3 bytes for the max_stack, max_locals, and code_length fields.
+
+# Now we write the actual machine instructions:
+
+b2 00 09            # getstatic - this is a bytecode instruction that retrieves a static field.
+                    # b2 = getstatic opcode, 0009 = index in constant pool of System.out (index 9)
 
 
-# code
+12 14               # ldc - this is a bytecode instruction that loads a constant from the constant pool onto the stack.
+                    # 12 = ldc opcode, 0014 = index in constant pool of the integer 10 (index 20)
 
-0001                # attributes_count
-0013                # code constant pool index
-00000016            # attribute_length
-0002                # max_stack
-0001                # max_locals
-0000000a            # code_length
+b6 00 0d            # invokevirtual - this is a bytecode instruction that invokes a method on an object.
+                    # b6 = invokevirtual opcode, 000d = index in constant pool of the println method (index 13)
 
-# The actual machine instructions:
-b2 00 09            # getstatic #nine (System.out)
-12 14               # ldc #twenty (int 10)
-b6 00 0d            # invokevirtual #thirteen (println)
-b1 00                 # return
+b1 00               # return - this is a bytecode instruction that returns from the method.
+                    # b1 = return opcode
+                    # 00 = no operands for the return instruction
 
-0000                # exception_table_length
-0000                # attributes_count (in Code)
+0000                # exception_table_length - there are no exceptions thrown in this method, so the length is 0.
+
+0000                # attributes_count (in Code) - this indicates that there are no additional attributes for the Code attribute.
+                    # In this case, we do not have any attributes like LineNumberTable or LocalVariableTable.
 
 
 
-# attributes count
+# attributes count - this class has no attributes.
+# Attributes in this context refer to additional metadata about the class, such as annotations or debugging information.
+# E.g. if the class was annotated with @Deprecated, there would be an attribute here.
 0000

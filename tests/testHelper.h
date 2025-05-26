@@ -25,6 +25,11 @@ public:
         std::vector<uint8_t> bytes;
         std::string token;
         while (file >> token) {
+            //if token starts with # ignore all tokens until the end of the line
+            if (token[0] == '#') {
+                std::getline(file, token); // skip the rest of the line
+                continue;
+            }
             // Skip non-hex tokens (e.g., line numbers, colons)
             if (token.find_first_not_of("0123456789abcdefABCDEF") != std::string::npos)
                 continue;

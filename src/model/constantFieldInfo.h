@@ -1,8 +1,13 @@
+/**
+ * @file codeAttribute.h
+ * @brief This file contains the definition of the ConstantFieldInfo class.
+ * @details The ConstantFieldInfo class represents a field reference in the constant pool of a Java class file.
+ */
+
 #ifndef CONSTANTFIELDINFO_H
 #define CONSTANTFIELDINFO_H
 #include <cstdint>
 
-#include "bigEndianUtil.h"
 #include "constantPoolEntry.h"
 
 class ConstantFieldInfo : public ConstantPoolEntry
@@ -21,6 +26,10 @@ public:
         return Tag::FIELD_REF;
     }
 
+    std::string key() const override
+    {
+        return tagToString(getTag()) + ":" + std::to_string(classNameIdx) + ":" + std::to_string(nameAndTypeIdx);
+    }
 
 private:
     uint16_t classNameIdx;

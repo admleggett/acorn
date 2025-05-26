@@ -1,4 +1,9 @@
-
+/**
+ * @file codeAttribute.h
+ * @brief This file contains the definition of the CodeAttribute class.
+ * @details The CodeAttribute class represents the "Code" attribute in a Java class file.
+ * It contains information about the method's bytecode and the actual code that is executed.
+ */
 
 #ifndef CODEATTRIBUTE_H
 #define CODEATTRIBUTE_H

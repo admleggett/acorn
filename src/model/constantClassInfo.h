@@ -33,6 +33,10 @@ public:
         return Tag::CLASS;
     }
 
+    std::string key() const override {
+        return tagToString(getTag()) + ":" + std::to_string(nameIndex);
+    }
+
 private:
     uint16_t nameIndex;
 

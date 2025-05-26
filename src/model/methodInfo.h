@@ -1,4 +1,8 @@
-
+/**
+ * @file methodInfo.h
+ * @brief this file contains the definition of the MethodInfo class.
+ * @details MethodInfo represents a method in a Java class file.
+ */
 #ifndef METHODINFO_H
 #define METHODINFO_H
 

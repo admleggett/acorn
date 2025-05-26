@@ -34,6 +34,10 @@ public:
         return Tag::UTF8;
     }
 
+    std::string key() const override {
+        return tagToString(getTag()) + ":" + *(this->value);
+    }
+
 private:
     std::unique_ptr<std::string> value;
 };

@@ -90,7 +90,7 @@ TEST(ClassByteCodeTest, SerializeMatchesExpectedHex) {
     constantPool.addEntry(mainDesc); // #18
     constantPool.addEntry(codeName); // #19
     constantPool.addEntry(intConstant); // #20
-    constantPool.addEntry(javaLangSystemOutput); // #21
+
 
     ClassHeaderInfo classHeader(
         0x0021, // flags: public, super

@@ -1,3 +1,9 @@
+/**
+ * @file constantMethodInfo.h
+ * @brief Header file for the ConstantMethodInfo class.
+ * @details This class represents a method reference in the constant pool of a Java class file.
+ *
+ */
 #ifndef CONSTANTMETHODINFO_H
 #define CONSTANTMETHODINFO_H
 
@@ -18,6 +24,11 @@ public:
     [[nodiscard]] Tag getTag() const override
     {
         return Tag::METHOD_REF;
+    }
+
+    std::string key() const override
+    {
+        return tagToString(getTag()) + ":" + std::to_string(classIndex) + ":" + std::to_string(nameAndTypeIndex);
     }
 
 private:
