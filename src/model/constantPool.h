@@ -11,6 +11,7 @@
 #include "constantPoolEntry.h"
 #include "byteCodeSerializable.h"
 #include "bigEndianUtil.h"
+#include <memory>
 
 class ConstantPool : public ByteCodeSerializable {
 

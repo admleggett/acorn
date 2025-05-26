@@ -8,11 +8,13 @@ add_executable(acornc
         src/scanner.cpp
         src/byteCodeWriter.cpp
         src/compiler.cpp
+        src/ast/byteCodeGeneratorVisitor.cpp
 )
 
 target_include_directories(acornc PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/src
         ${CMAKE_CURRENT_SOURCE_DIR}/src/model
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/ast
 )
 
 include(FetchContent)
@@ -36,6 +38,8 @@ add_executable(GTest
         src/byteCodeWriter.cpp
         src/compiler.cpp
         tests/scannerTest.cpp
+        src/ast/byteCodeGeneratorVisitor.cpp
+        tests/byteCodeGeneratorVisitorTest.cpp
 )
 target_include_directories(GTest PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/src
