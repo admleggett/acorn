@@ -48,7 +48,24 @@ public:
         }
         return bytes;
     }
+
+    //helper function to convert a vector of bytes to a hex string
+    static std::string bytesToHex(const std::vector<uint8_t>& bytes) {
+        std::ostringstream oss;
+        for (const auto& byte : bytes) {
+            oss << std::hex << std::setw(2) << std::setfill('0') << static_cast<int>(byte);
+        }
+        return oss.str();
+    }
 };
+
+
+
+// Macro for byte equality assertion
+#define EXPECT_BYTES_EQ(val1, val2) \
+EXPECT_EQ(TestHelper::bytesToHex(val1), TestHelper::bytesToHex(val2)) \
+<< "Expected: " << TestHelper::bytesToHex(val2) << "\nActual:   " << TestHelper::bytesToHex(val1)
+
 
 // Macro for hex equality assertion
 // This macro compares two byte arrays and prints the expected and actual values in hex format

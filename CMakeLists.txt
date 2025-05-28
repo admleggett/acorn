@@ -6,6 +6,7 @@ set(CMAKE_CXX_STANDARD 17)
 add_executable(acornc
         src/main.cpp
         src/scanner.cpp
+        src/parser.cpp
         src/byteCodeWriter.cpp
         src/compiler.cpp
         src/ast/byteCodeGeneratorVisitor.cpp
@@ -35,11 +36,13 @@ add_executable(GTest
         tests/classByteCodeTest.cpp
         tests/mainTest.cpp
         src/scanner.cpp
+        src/parser.cpp
         src/byteCodeWriter.cpp
         src/compiler.cpp
         tests/scannerTest.cpp
         src/ast/byteCodeGeneratorVisitor.cpp
         tests/byteCodeGeneratorVisitorTest.cpp
+        tests/byteCodeWriterTest.cpp
 )
 target_include_directories(GTest PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/src
@@ -54,3 +57,5 @@ add_test(NAME ConstantPoolTest COMMAND GTest)
 add_test(NAME ClassHeaderInfoTest COMMAND GTest)
 add_test(NAME ClassByteCodeTest COMMAND GTest)
 add_test(NAME ScannerTest COMMAND GTest)
+add_test(NAME ByteCodeGeneratorVisitorTest COMMAND GTest)
+add_test(NAME ByteCodeWriterTest COMMAND GTest)

@@ -1,5 +1,6 @@
 #include "scanner.h"
 #include <fstream>
+#include <iostream>
 #include <sstream>
 
 Scanner::Scanner(std::string source) : source_(std::move(source)) {}
@@ -22,6 +23,7 @@ std::vector<std::string> Scanner::tokenize() const
         while (iss >> token) {
             // Skip empty tokens
             if (!token.empty()) {
+                //std::cout << "Token: " << token << std::endl; // Debug output
                 tokens.push_back(token);
             }
         }
