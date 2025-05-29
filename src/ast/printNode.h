@@ -1,3 +1,9 @@
+/**
+ * @file printNode.h
+ * @brief Declaration of the PrintNode class.
+ * @details The PrintNode class represents a node in the abstract syntax tree (AST) that corresponds to a print statement.
+ * It contains a value that can be any ASTNode type, which will be printed when the print statement is executed.
+ */
 #ifndef PRINTNODE_H
 #define PRINTNODE_H
 

@@ -1,5 +1,5 @@
 /**
- * @file codeAttribute.h
+ * @file constantIntegerInfo.h
  * @brief This file contains the definition of the ConstantIntegerInfo class.
  * @details The ConstantIntegerInfo class represents an integer constant in the constant pool of a Java class file.
  *

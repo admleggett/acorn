@@ -1,3 +1,10 @@
+/**
+ * @file parser.h
+ * @brief Declaration of the Parser class.
+ *
+ * This file declares the Parser class, which is responsible for parsing a sequence of tokens
+ * into an abstract syntax tree (AST).
+ */
 #ifndef PARSER_H
 #define PARSER_H
 

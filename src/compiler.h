@@ -1,3 +1,8 @@
+/**
+ * @file compiler.h
+ * @brief Declaration of the Compiler class.
+ * @details The Compiler class is responsible for compiling source code into bytecode using a scanner, parser, and bytecode writer.
+ */
 #ifndef COMPILER_H
 #define COMPILER_H
 

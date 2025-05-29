@@ -1,7 +1,7 @@
 /**
 * @file constantPoolEntry.h
 * @brief Header file for the ConstantPoolEntry class.
-* @details This class represents an entry in the constant pool of a Java class file.
+* @details This (virtual abstract) class represents an entry in the constant pool of a Java class file.
 */
 #ifndef CONSTANTPOOLENTRY_H
 #define CONSTANTPOOLENTRY_H

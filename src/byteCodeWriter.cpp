@@ -53,7 +53,7 @@ void ByteCodeWriter::write(const std::vector<std::unique_ptr<ASTNode>>& statemen
 
     // create a constant pool with entries for the classname and the superclass
     auto classInfo = std::make_shared<ConstantClassInfo>(2);
-    auto className = std::make_shared<ConstantUtf8Info>("Acorn");
+    auto className = std::make_shared<ConstantUtf8Info>(this ->className_);
     auto superClassInfo = std::make_shared<ConstantClassInfo>(4);
     auto superClassName = std::make_shared<ConstantUtf8Info>("java/lang/Object");
     auto mainName = std::make_shared<ConstantUtf8Info>("main");

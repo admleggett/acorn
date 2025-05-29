@@ -1,3 +1,9 @@
+/**
+ * file: byteCodeGeneratorVisitor.h
+ * brief: Declaration of the ByteCodeGeneratorVisitor class.
+ * details: The ByteCodeGeneratorVisitor class is responsible for generating bytecode from the AST nodes.
+ * It inherits from ASTVisitor and implements the visit methods for specific node types.
+ */
 #ifndef BYTECODEGENERATORVISITOR_H
 #define BYTECODEGENERATORVISITOR_H
 #include "astVisitor.h"

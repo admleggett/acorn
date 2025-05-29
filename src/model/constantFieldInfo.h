@@ -1,5 +1,5 @@
 /**
- * @file codeAttribute.h
+ * @file constantFieldInfo.h
  * @brief This file contains the definition of the ConstantFieldInfo class.
  * @details The ConstantFieldInfo class represents a field reference in the constant pool of a Java class file.
  */

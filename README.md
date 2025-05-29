@@ -37,14 +37,24 @@ cmake --build .
 To compile an Acorn source file:
 
 ```
-./acornc myfile.aco
+./acornc altair.aco
 ```
 
-This will generate a `Acorn.class` file. To run the compiled program on the JVM:
+This will generate a `Altair.class` file. To run the compiled program on the JVM:
 
 ```
-java Acorn
+java Altair
 ```
+
+Or, you can run the Acorn 'interpreter': 
+
+```
+./acorn altair.aco
+```
+which compiles and runs the program in one step.
+
+
+
 
 ## License
 MIT License

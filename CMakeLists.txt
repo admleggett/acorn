@@ -3,8 +3,7 @@ project(acorn)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(acornc
-        src/main.cpp
+add_library(acornlib
         src/scanner.cpp
         src/parser.cpp
         src/byteCodeWriter.cpp
@@ -12,11 +11,20 @@ add_executable(acornc
         src/ast/byteCodeGeneratorVisitor.cpp
 )
 
-target_include_directories(acornc PRIVATE
+target_include_directories(acornlib PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/src
         ${CMAKE_CURRENT_SOURCE_DIR}/src/model
         ${CMAKE_CURRENT_SOURCE_DIR}/src/ast
 )
+
+add_executable(acornc src/main.cpp)
+add_executable(acorn src/interpreter/main.cpp)
+
+# Link the acornc executable with the acornlib library
+target_link_libraries(acornc PRIVATE acornlib)
+# Link the acorn executable with the acornlib library
+target_link_libraries(acorn PRIVATE acornlib)
+
 
 include(FetchContent)
 FetchContent_Declare(
@@ -35,27 +43,15 @@ add_executable(GTest
         tests/classHeaderInfoTest.cpp
         tests/classByteCodeTest.cpp
         tests/mainTest.cpp
-        src/scanner.cpp
-        src/parser.cpp
-        src/byteCodeWriter.cpp
-        src/compiler.cpp
         tests/scannerTest.cpp
-        src/ast/byteCodeGeneratorVisitor.cpp
         tests/byteCodeGeneratorVisitorTest.cpp
         tests/byteCodeWriterTest.cpp
 )
 target_include_directories(GTest PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/src
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/model
+        $<TARGET_PROPERTY:acornlib,INCLUDE_DIRECTORIES>
         ${CMAKE_CURRENT_SOURCE_DIR}/tests
 )
-target_link_libraries(GTest gtest_main)
 
-# add all tests to the test suite
-add_test(NAME CompilerIntegrationTest COMMAND GTest)
-add_test(NAME ConstantPoolTest COMMAND GTest)
-add_test(NAME ClassHeaderInfoTest COMMAND GTest)
-add_test(NAME ClassByteCodeTest COMMAND GTest)
-add_test(NAME ScannerTest COMMAND GTest)
-add_test(NAME ByteCodeGeneratorVisitorTest COMMAND GTest)
-add_test(NAME ByteCodeWriterTest COMMAND GTest)
+target_link_libraries(GTest PRIVATE acornlib gtest gtest_main)
+
+add_test(NAME AllTests COMMAND GTest)

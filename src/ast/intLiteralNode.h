@@ -1,3 +1,8 @@
+/**
+ * @file intLiteralNode.h
+ * @brief Declaration of the IntLiteralNode class.
+ * @details The IntLiteralNode class represents an integer literal in the abstract syntax tree (AST).
+ */
 #ifndef INTLITERALNODE_H
 #define INTLITERALNODE_H
 
