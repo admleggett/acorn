@@ -6,6 +6,7 @@
 #ifndef METHODINFO_H
 #define METHODINFO_H
 
+#include <utility>
 #include <vector>
 #include <memory>
 #include "byteCodeSerializable.h"
@@ -14,8 +15,8 @@
 class MethodInfo : public ByteCodeSerializable {
 public:
     MethodInfo(uint16_t accessFlags, uint16_t nameIdx, uint16_t descIdx,
-               const std::vector<std::shared_ptr<ByteCodeSerializable>>& attrs)
-        : accessFlags(accessFlags), nameIndex(nameIdx), descriptorIndex(descIdx), attributes(attrs) {}
+               std::vector<std::unique_ptr<ByteCodeSerializable>>&& attrs)
+        : accessFlags(accessFlags), nameIndex(nameIdx), descriptorIndex(descIdx), attributes(std::move(attrs)) {}
 
     [[nodiscard]] std::vector<uint8_t> serialize() const override {
         std::vector<uint8_t> bytes;
@@ -39,7 +40,7 @@ private:
     uint16_t accessFlags;
     uint16_t nameIndex;
     uint16_t descriptorIndex;
-    std::vector<std::shared_ptr<ByteCodeSerializable>> attributes;
+    std::vector<std::unique_ptr<ByteCodeSerializable>> attributes;
 };
 
 #endif //METHODINFO_H
