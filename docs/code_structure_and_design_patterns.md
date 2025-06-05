@@ -17,16 +17,18 @@ The codebase is organised as follows
 
 The codebase uses modern C++ (C++17, as specified in the `CMakeLists.txt`) and follows idiomatic memory management practices:
 
-- **Smart Pointers:** Ownership and lifetime of dynamically allocated objects are managed using smart pointers such as `std::shared_ptr` and `std::unique_ptr`. This eliminates manual memory management and helps prevent memory leaks and dangling pointers.
+- **Smart Pointers:** Ownership and lifetime of dynamically allocated objects are managed using smart pointers such as `std::unique_ptr`. This eliminates manual memory management and helps prevent memory leaks and dangling pointers.
 - **RAII Principle:** Resource Acquisition Is Initialization (RAII) is followed, ensuring resources are released automatically when objects go out of scope.
 - **No Raw `new`/`delete`:** Direct use of `new` and `delete` is avoided in favor of smart pointers and standard containers.
 
 Example:
 ```cpp
-// Using std::shared_ptr for shared ownership
-std::shared_ptr<ClassFileHeader> fileHeader = std::make_shared<ClassFileHeader>(...);
-std::shared_ptr<ConstantPool> constantPool = std::make_shared<ConstantPool>(...);
-auto classByteCode = std::make_shared<ClassByteCode>(fileHeader, constantPool, ...);
+// Using std::unique_ptr for exclusive ownership
+std::unique_ptr<ClassFileHeader> fileHeader = std::make_unique<ClassFileHeader>(...);
+std::unique_ptr<ConstantPool> constantPool = std::make_unique<ConstantPool>(...);
+auto classByteCode = std::make_unique<ClassByteCode>(
+    std::move(fileHeader), std::move(constantPool), ...
+);
 ```
 
 
