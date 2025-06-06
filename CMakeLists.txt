@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.16.3)
 project(acorn)
 
+# Fix for jni headers not being found by CLion IDE
+unset(CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES)
+
 set(CMAKE_CXX_STANDARD 17)
 
 add_library(acornlib
@@ -9,13 +12,21 @@ add_library(acornlib
         src/byteCodeWriter.cpp
         src/compiler.cpp
         src/ast/byteCodeGeneratorVisitor.cpp
+        src/interpreter/interpreter.cpp
+        src/interpreter/jniJvmLauncher.cpp
 )
+find_package(Java REQUIRED)
+find_package(JNI REQUIRED)
 
 target_include_directories(acornlib PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/src
         ${CMAKE_CURRENT_SOURCE_DIR}/src/model
         ${CMAKE_CURRENT_SOURCE_DIR}/src/ast
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/interpreter
+        ${JNI_INCLUDE_DIRS}
 )
+
+target_link_libraries(acornlib PRIVATE ${JNI_LIBRARIES})
 
 add_executable(acornc src/main.cpp)
 add_executable(acorn src/interpreter/main.cpp)
@@ -46,6 +57,7 @@ add_executable(GTest
         tests/scannerTest.cpp
         tests/byteCodeGeneratorVisitorTest.cpp
         tests/byteCodeWriterTest.cpp
+        tests/interpreterTest.cpp
 )
 
 option(ENABLE_ASAN "Enable Address Sanitizer" OFF)
@@ -66,6 +78,6 @@ target_include_directories(GTest PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/tests
 )
 
-target_link_libraries(GTest PRIVATE acornlib gtest gtest_main)
+target_link_libraries(GTest PRIVATE acornlib gtest gtest_main gmock gmock_main)
 
 add_test(NAME AllTests COMMAND GTest)

@@ -1,19 +1,17 @@
 #include <iostream>
-#include "../compilerApplication.h"
+#include "interpreter.h"
+#include "jniJvmLauncher.h"
 
 int main(const int argc, char* argv[]) {
     if (argc < 2) {
         std::cerr << "Usage: " << argv[0] << " <source.aco>" << std::endl;
         return 1;
     }
-    std::string sourceFile = argv[1];
-    //invoke the compiler with the source file
-    CompilerApplication compilerApp;
-    auto clazz = compilerApp.compile(sourceFile);
-    //launch the Java Virtual Machine to run the compiled class
+    const std::string sourceFile = argv[1];
 
-    //@TODO: Handle the case where the class file is not found or cannot be executed
-    //@TODO: Update to use the JNI to run the class instead of using system()
-    int result = std::system(("java " + clazz).c_str());
-    return result == 0 ? 0 : 1;
+    auto compilerApp = std::make_unique<CompilerApplication>();
+    auto jvmLauncher = std::make_unique<JniJvmLauncher>();
+    const auto interpreter =
+        std::make_unique<Interpreter>(std::move(compilerApp), std::move(jvmLauncher));
+    return interpreter->run(sourceFile);
 }

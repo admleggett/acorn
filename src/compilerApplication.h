@@ -3,6 +3,9 @@
  * @brief Declaration of the CompilerApplication class.
  * @details The CompilerApplication class is responsible for compiling a source file into bytecode.
  */
+#ifndef COMPILERAPPLICATION_H
+#define COMPILERAPPLICATION_H
+
 #include <iostream>
 #include <memory>
 #include <string>
@@ -11,11 +14,19 @@
 #include "byteCodeWriter.h"
 #include "compiler.h"
 
-class CompilerApplication {
+class ICompilerApplication
+{
+public:
+    virtual ~ICompilerApplication() = default;
+    virtual std::string compile(std::string sourceFile) = 0;
+};
+
+class CompilerApplication : public ICompilerApplication
+{
 
 public:
 
-    std::string compile(std::string sourceFile) {
+    std::string compile(std::string sourceFile) override{
 
         auto sourceFileName = sourceFile.substr(sourceFile.find_last_of("/\\") + 1);
 
@@ -50,3 +61,5 @@ public:
     }
 
 };
+
+#endif
