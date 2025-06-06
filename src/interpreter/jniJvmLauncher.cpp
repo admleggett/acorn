@@ -1,11 +1,17 @@
 #include "jniJvmLauncher.h"
-#include <jni.h>
 #include <iostream>
+
+#ifdef HAVE_JNI_H
+#include <jni.h>
+#endif
+
 
 int JniJvmLauncher::launch(const std::string& className) {
 
     //console out invocation of the JVM via JNI
     //std::cout << "Launching JVM with class: " << className << std::endl;
+#ifdef HAVE_JNI_H
+    // JNI code here
 
     JavaVM* jvm;
     JNIEnv* env;
@@ -44,6 +50,7 @@ int JniJvmLauncher::launch(const std::string& className) {
 
     // Destroy the JVM
     jvm->DestroyJavaVM();
+#endif
 
     return 0; // Success
 }
