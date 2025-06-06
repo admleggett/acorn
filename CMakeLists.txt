@@ -6,6 +6,8 @@ unset(CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES)
 
 set(CMAKE_CXX_STANDARD 17)
 
+option(USING_JNI "Enable JNI support" ON)
+
 add_library(acornlib
         src/scanner.cpp
         src/parser.cpp
@@ -15,18 +17,21 @@ add_library(acornlib
         src/interpreter/interpreter.cpp
         src/interpreter/jniJvmLauncher.cpp
 )
-find_package(Java REQUIRED)
-find_package(JNI REQUIRED)
+
+if(USING_JNI)
+    find_package(Java REQUIRED)
+    find_package(JNI REQUIRED)
+    target_compile_definitions(acornlib PRIVATE HAVE_JNI_H)
+    target_include_directories(acornlib PRIVATE ${JNI_INCLUDE_DIRS})
+    target_link_libraries(acornlib PRIVATE ${JNI_LIBRARIES})
+endif()
 
 target_include_directories(acornlib PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/src
         ${CMAKE_CURRENT_SOURCE_DIR}/src/model
         ${CMAKE_CURRENT_SOURCE_DIR}/src/ast
         ${CMAKE_CURRENT_SOURCE_DIR}/src/interpreter
-        ${JNI_INCLUDE_DIRS}
 )
-
-target_link_libraries(acornlib PRIVATE ${JNI_LIBRARIES})
 
 add_executable(acornc src/main.cpp)
 add_executable(acorn src/interpreter/main.cpp)
@@ -47,18 +52,9 @@ FetchContent_MakeAvailable(googletest)
 
 enable_testing()
 
-# Test sources
-add_executable(GTest
-        tests/compilerIntegrationTest.cpp
-        tests/constantPoolTest.cpp
-        tests/classHeaderInfoTest.cpp
-        tests/classByteCodeTest.cpp
-        tests/mainTest.cpp
-        tests/scannerTest.cpp
-        tests/byteCodeGeneratorVisitorTest.cpp
-        tests/byteCodeWriterTest.cpp
-        tests/interpreterTest.cpp
-)
+file(GLOB TEST_SOURCES tests/*.cpp)
+
+add_executable(GTest ${TEST_SOURCES})
 
 option(ENABLE_ASAN "Enable Address Sanitizer" OFF)
 
@@ -80,4 +76,10 @@ target_include_directories(GTest PRIVATE
 
 target_link_libraries(GTest PRIVATE acornlib gtest gtest_main gmock gmock_main)
 
-add_test(NAME AllTests COMMAND GTest)
+set(TEST_RESOURCES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/tests/resources")
+
+#add_test(NAME AllTests COMMAND GTest ${TEST_RESOURCES_DIR})
+include(GoogleTest)
+gtest_discover_tests(GTest
+    EXTRA_ARGS "${TEST_RESOURCES_DIR}"
+)
