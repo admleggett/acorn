@@ -10,6 +10,7 @@ std::vector<std::string> Scanner::tokenize() const
     std::vector<std::string> tokens;
     std::ifstream file(source_);
     if (!file.is_open()) {
+        std::cerr << "Failed to open: " << source_ << std::endl;
         throw std::runtime_error("Could not open source file: " + source_);
     }
     std::string line;
