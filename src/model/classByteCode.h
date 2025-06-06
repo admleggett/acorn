@@ -19,16 +19,16 @@
 #include "bigEndianUtil.h"
 #include "methodInfo.h"
 
-class ClassByteCode : public ByteCodeSerializable {
+class ClassByteCode final : public ByteCodeSerializable {
 public:
-    ClassByteCode(std::shared_ptr<ClassFileHeader> fileHeader,
-                  std::shared_ptr<ConstantPool> constantPool,
-                  std::shared_ptr<ClassHeaderInfo> classHeader,
-                  std::shared_ptr<MethodInfo> methodInfo)
+    ClassByteCode(std::unique_ptr<ClassFileHeader> fileHeader,
+                  std::unique_ptr<ConstantPool> constantPool,
+                  std::unique_ptr<ClassHeaderInfo> classHeader,
+                  std::unique_ptr<MethodInfo> methodInfo)
         : fileHeader(std::move(fileHeader)),
           constantPool(std::move(constantPool)),
           classHeader(std::move(classHeader)),
-            methodInfo(std::move(methodInfo)) {}
+          methodInfo(std::move(methodInfo)) {}
 
     [[nodiscard]] std::vector<uint8_t> serialize() const override {
         std::vector<uint8_t> bytes;
@@ -53,10 +53,10 @@ public:
         return bytes;
     }
 private:
-    std::shared_ptr<ClassFileHeader> fileHeader;
-    std::shared_ptr<ConstantPool> constantPool;
-    std::shared_ptr<ClassHeaderInfo> classHeader;
-    std::shared_ptr<MethodInfo> methodInfo;
+    std::unique_ptr<ClassFileHeader> fileHeader;
+    std::unique_ptr<ConstantPool> constantPool;
+    std::unique_ptr<ClassHeaderInfo> classHeader;
+    std::unique_ptr<MethodInfo> methodInfo;
     // Add other members as needed
     uint16_t attributes_count_ = 0; // Placeholder for attributes count, if needed
 };

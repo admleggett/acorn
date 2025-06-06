@@ -7,8 +7,8 @@
 TEST(ConstantPoolTest, SerializeProducesExpectedHex) {
     ConstantPool pool;
     // Add: ClassInfo(nameIndex=2), Utf8Info("Test")
-    pool.addEntry(std::make_shared<ConstantClassInfo>(2));
-    pool.addEntry(std::make_shared<ConstantUtf8Info>("Test"));
+    pool.addEntry(std::make_unique<ConstantClassInfo>(2));
+    pool.addEntry(std::make_unique<ConstantUtf8Info>("Test"));
 
     // Expected bytes:
     // 00 03           // constant_pool_count = 3 (2 entries + 1)

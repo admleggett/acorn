@@ -18,20 +18,19 @@ class ConstantPool : public ByteCodeSerializable {
 
 public:
     // Returns the index (1-based) of the entry, adding it if not present
-    uint16_t intern(const std::shared_ptr<ConstantPoolEntry>& entry) {
-        std::string k = entry->key();
-        auto it = indexMap.find(k);
-        if (it != indexMap.end()) {
+    uint16_t intern(std::unique_ptr<ConstantPoolEntry> entry) {
+        const std::string k = entry->key();
+        if (const auto it = indexMap.find(k); it != indexMap.end()) {
             return it->second;
         }
-        entries.push_back(entry);
-        uint16_t idx = static_cast<uint16_t>(entries.size()); // 1-based
+        entries.push_back(std::move(entry));
+        const auto idx = static_cast<uint16_t>(entries.size()); // 1-based
         indexMap[k] = idx;
         return idx;
     }
 
-    void addEntry(const std::shared_ptr<ConstantPoolEntry>& entry) {
-        intern(entry);
+    void addEntry(std::unique_ptr<ConstantPoolEntry> entry) {
+        intern(std::move(entry));
     }
 
     [[nodiscard]] std::vector<uint8_t> serialize() const override {
@@ -51,12 +50,12 @@ public:
         return entries.size();
     }
 
-    [[nodiscard]] const std::shared_ptr<ConstantPoolEntry>& getEntry(size_t index) const {
+    [[nodiscard]] const std::unique_ptr<ConstantPoolEntry>& getEntry(const size_t index) const {
         return entries.at(index);
     }
 
 private:
-    std::vector<std::shared_ptr<ConstantPoolEntry>> entries;
+    std::vector<std::unique_ptr<ConstantPoolEntry>> entries;
     std::unordered_map<std::string, uint16_t> indexMap;
 
 };

@@ -58,6 +58,20 @@ add_executable(GTest
         tests/byteCodeGeneratorVisitorTest.cpp
         tests/byteCodeWriterTest.cpp
 )
+
+option(ENABLE_ASAN "Enable Address Sanitizer" OFF)
+
+if(ENABLE_ASAN)
+    message(STATUS "Building with AddressSanitizer enabled")
+    if(MSVC)
+        target_compile_options(GTest PRIVATE /fsanitize=address)
+        message(STATUS "Note: For MSVC, you may need to set _NO_DEBUG_HEAP=1 environment variable")
+    else()
+        target_compile_options(GTest PRIVATE -fsanitize=address -fno-omit-frame-pointer)
+        target_link_options(GTest PRIVATE -fsanitize=address)
+    endif()
+endif()
+
 target_include_directories(GTest PRIVATE
         $<TARGET_PROPERTY:acornlib,INCLUDE_DIRECTORIES>
         ${CMAKE_CURRENT_SOURCE_DIR}/tests
