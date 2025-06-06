@@ -1,18 +1,21 @@
 #ifndef INTERPRETER_H
 #define INTERPRETER_H
 
+#include "jvmLauncher.h"
 #include "../compilerApplication.h"
 
 class Interpreter {
 
 public:
-    explicit Interpreter(CompilerApplication& app);
+    explicit Interpreter(std::unique_ptr<ICompilerApplication> compilerApp,
+                        std::unique_ptr<IJvmLauncher> jvmLauncher);
     ~Interpreter() = default;
 
-    int run(std::string sourceFile);
+    [[nodiscard]] int run(const std::string& sourceFile) const;
 
 private:
-    CompilerApplication& compilerApp;
+    std::unique_ptr<ICompilerApplication> compilerApp_;
+    std::unique_ptr<IJvmLauncher> jvmLauncher_;
 };
 
 

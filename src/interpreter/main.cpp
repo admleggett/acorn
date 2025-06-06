@@ -1,5 +1,6 @@
 #include <iostream>
 #include "interpreter.h"
+#include "jniJvmLauncher.h"
 
 int main(const int argc, char* argv[]) {
     if (argc < 2) {
@@ -8,7 +9,9 @@ int main(const int argc, char* argv[]) {
     }
     const std::string sourceFile = argv[1];
 
-    CompilerApplication compilerApp;
-    const auto interpreter = std::make_unique<Interpreter>(compilerApp);
+    auto compilerApp = std::make_unique<CompilerApplication>();
+    auto jvmLauncher = std::make_unique<JniJvmLauncher>();
+    const auto interpreter =
+        std::make_unique<Interpreter>(std::move(compilerApp), std::move(jvmLauncher));
     return interpreter->run(sourceFile);
 }

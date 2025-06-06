@@ -57,6 +57,7 @@ add_executable(GTest
         tests/scannerTest.cpp
         tests/byteCodeGeneratorVisitorTest.cpp
         tests/byteCodeWriterTest.cpp
+        tests/interpreterTest.cpp
 )
 
 option(ENABLE_ASAN "Enable Address Sanitizer" OFF)
@@ -77,6 +78,6 @@ target_include_directories(GTest PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/tests
 )
 
-target_link_libraries(GTest PRIVATE acornlib gtest gtest_main)
+target_link_libraries(GTest PRIVATE acornlib gtest gtest_main gmock gmock_main)
 
 add_test(NAME AllTests COMMAND GTest)
