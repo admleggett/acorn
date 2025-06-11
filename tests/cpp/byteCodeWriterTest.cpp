@@ -1,5 +1,5 @@
-#include <ast/intLiteralNode.h>
-#include <ast/printNode.h>
+#include "ast/intLiteralNode.h"
+#include "ast/printNode.h"
 #include <gtest/gtest.h>
 #include "byteCodeWriter.h"
 

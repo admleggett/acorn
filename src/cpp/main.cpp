@@ -1,9 +1,4 @@
 #include <iostream>
-#include <memory>
-#include "parser.h"
-#include "scanner.h"
-#include "byteCodeWriter.h"
-#include "compiler.h"
 #include "compilerApplication.h"
 
 int main(const int argc, char* argv[]) {

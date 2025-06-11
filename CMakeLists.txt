@@ -9,13 +9,13 @@ set(CMAKE_CXX_STANDARD 17)
 option(USING_JNI "Enable JNI support" ON)
 
 add_library(acornlib
-        src/scanner.cpp
-        src/parser.cpp
-        src/byteCodeWriter.cpp
-        src/compiler.cpp
-        src/ast/byteCodeGeneratorVisitor.cpp
-        src/interpreter/interpreter.cpp
-        src/interpreter/jniJvmLauncher.cpp
+        src/cpp/scanner.cpp
+        src/cpp/parser.cpp
+        src/cpp/byteCodeWriter.cpp
+        src/cpp/compiler.cpp
+        src/cpp/ast/byteCodeGeneratorVisitor.cpp
+        src/cpp/interpreter/interpreter.cpp
+        src/cpp/interpreter/jniJvmLauncher.cpp
 )
 
 if(USING_JNI)
@@ -27,20 +27,42 @@ if(USING_JNI)
 endif()
 
 target_include_directories(acornlib PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/src
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/model
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/ast
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/interpreter
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/cpp/model
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/cpp/ast
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/cpp/interpreter
 )
 
-add_executable(acornc src/main.cpp)
-add_executable(acorn src/interpreter/main.cpp)
+add_executable(acornc src/cpp/main.cpp)
+add_executable(acorn src/cpp/interpreter/main.cpp)
 
 # Link the acornc executable with the acornlib library
 target_link_libraries(acornc PRIVATE acornlib)
 # Link the acorn executable with the acornlib library
 target_link_libraries(acorn PRIVATE acornlib)
 
+####################################
+# Java compilation setup
+####################################
+if(USING_JNI)
+    include(UseJava)
+
+    find_package(Java REQUIRED COMPONENTS Development)
+    set(CMAKE_JAVA_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+
+    #compile the Java files in the src/java directory
+    file(GLOB JAVA_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/java/acorn/loader/*.java)
+    message(STATUS "Java sources: ${JAVA_SOURCES}")
+    add_jar(acornlib_java
+        SOURCES ${JAVA_SOURCES}
+        OUTPUT_NAME acornlib
+    )
+endif ()
+
+
+####################################
+# Unit tests setup
+####################################
 
 include(FetchContent)
 FetchContent_Declare(
@@ -52,7 +74,7 @@ FetchContent_MakeAvailable(googletest)
 
 enable_testing()
 
-file(GLOB TEST_SOURCES tests/*.cpp)
+file(GLOB TEST_SOURCES tests/cpp/*.cpp)
 
 add_executable(GTest ${TEST_SOURCES})
 
@@ -71,12 +93,12 @@ endif()
 
 target_include_directories(GTest PRIVATE
         $<TARGET_PROPERTY:acornlib,INCLUDE_DIRECTORIES>
-        ${CMAKE_CURRENT_SOURCE_DIR}/tests
+        ${CMAKE_CURRENT_SOURCE_DIR}/tests/cpp
 )
 
 target_link_libraries(GTest PRIVATE acornlib gtest gtest_main gmock gmock_main)
 
-set(TEST_RESOURCES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/tests/resources")
+set(TEST_RESOURCES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/tests/cpp/resources")
 
 #add_test(NAME AllTests COMMAND GTest ${TEST_RESOURCES_DIR})
 include(GoogleTest)

@@ -1,7 +1,6 @@
 #include "interpreter.h"
 
 #include "jniJvmLauncher.h"
-#include "systemJvmLauncher.h"
 
 Interpreter::Interpreter(std::unique_ptr<ICompilerApplication> compilerApp,
                          std::unique_ptr<IJvmLauncher> jvmLauncher)

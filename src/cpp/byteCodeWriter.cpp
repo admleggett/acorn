@@ -3,15 +3,11 @@
 #include <vector>
 #include <cstdint>
 #include <memory>
-#include <ast/intLiteralNode.h>
-#include <ast/printNode.h>
-
-#include "codeAttribute.h"
-#include "constantFieldInfo.h"
-#include "constantIntegerInfo.h"
-#include "constantMethodInfo.h"
-#include "constantNameAndTypeInfo.h"
+#include "ast/intLiteralNode.h"
+#include "ast/printNode.h"
 #include "ast/byteCodeGeneratorVisitor.h"
+
+#include "model/codeAttribute.h"
 #include "model/classFileHeader.h"
 #include "model/constantClassInfo.h"
 #include "model/constantUtf8Info.h"
