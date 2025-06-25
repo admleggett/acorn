@@ -11,7 +11,7 @@
 #include <vector>
 #include <string>
 #include <memory>
-#include "ast/astNode.h"
+#include "../ast/astNode.h"
 
 class Parser {
 public:

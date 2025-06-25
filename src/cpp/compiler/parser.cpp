@@ -2,8 +2,8 @@
 
 #include <iostream>
 
-#include "ast/intLiteralNode.h"
-#include "ast/printNode.h"
+#include "../ast/intLiteralNode.h"
+#include "../ast/printNode.h"
 
 Parser::Parser(const std::vector<std::string>& tokens) : tokens_(tokens), pos_(0) {}
 
