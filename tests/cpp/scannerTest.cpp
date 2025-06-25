@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "scanner.h"
+#include "compiler/scanner.h"
 #include "testHelper.h"
 
 // Declare the global variable

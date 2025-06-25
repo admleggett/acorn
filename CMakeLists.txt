@@ -9,10 +9,10 @@ set(CMAKE_CXX_STANDARD 17)
 option(USING_JNI "Enable JNI support" ON)
 
 add_library(acornlib
-        src/cpp/scanner.cpp
-        src/cpp/parser.cpp
-        src/cpp/byteCodeWriter.cpp
-        src/cpp/compiler.cpp
+        src/cpp/compiler/scanner.cpp
+        src/cpp/compiler/parser.cpp
+        src/cpp/compiler/byteCodeWriter.cpp
+        src/cpp/compiler/compiler.cpp
         src/cpp/ast/byteCodeGeneratorVisitor.cpp
         src/cpp/interpreter/interpreter.cpp
         src/cpp/interpreter/jniJvmLauncher.cpp
@@ -28,10 +28,17 @@ endif()
 
 target_include_directories(acornlib PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/src/cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/cpp/compiler
         ${CMAKE_CURRENT_SOURCE_DIR}/src/cpp/model
         ${CMAKE_CURRENT_SOURCE_DIR}/src/cpp/ast
         ${CMAKE_CURRENT_SOURCE_DIR}/src/cpp/interpreter
 )
+
+# echo the include directories for debugging purposes
+message(STATUS "Include directories for acornlib:")
+foreach(dir IN LISTS CMAKE_INCLUDE_DIRECTORIES)
+    message(STATUS "  ${dir}")
+endforeach()
 
 add_executable(acornc src/cpp/main.cpp)
 add_executable(acorn src/cpp/interpreter/main.cpp)

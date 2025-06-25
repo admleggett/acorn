@@ -1,7 +1,7 @@
 #include "ast/intLiteralNode.h"
 #include "ast/printNode.h"
 #include <gtest/gtest.h>
-#include "byteCodeWriter.h"
+#include "compiler/byteCodeWriter.h"
 
 #include "testHelper.h"
 

@@ -13,6 +13,11 @@ public:
         int result = std::system(("java " + className).c_str());
         return result == 0 ? 0 : 1;
     }
+
+    int launch(const std::string& className, const std::vector<uint8_t>& byteCode) override {
+        // This method is not implemented for SystemJvmLauncher
+        return -1; // Indicating that this method is not supported
+    }
 };
 
 #endif //SYSTEMJVMLAUNCHER_H

@@ -9,10 +9,7 @@
 
 #include <string>
 #include <vector>
-#include <fstream>
-#include <cstdint>
-#include "model/byteCodeSerializable.h"
-#include "ast/astNode.h"
+#include "../ast/astNode.h"
 #include <memory>
 
 class ByteCodeWriter {

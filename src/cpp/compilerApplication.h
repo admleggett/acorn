@@ -9,10 +9,10 @@
 #include <iostream>
 #include <memory>
 #include <string>
-#include "parser.h"
-#include "scanner.h"
-#include "byteCodeWriter.h"
-#include "compiler.h"
+#include "compiler/parser.h"
+#include "compiler/scanner.h"
+#include "compiler/byteCodeWriter.h"
+#include "compiler/compiler.h"
 
 class ICompilerApplication
 {

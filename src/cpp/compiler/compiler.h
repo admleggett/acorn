@@ -7,8 +7,8 @@
 #define COMPILER_H
 
 #include <memory>
-#include "../scanner.h"
-#include "../parser.h"
+#include "scanner.h"
+#include "parser.h"
 #include "byteCodeWriter.h"
 
 class Compiler {
