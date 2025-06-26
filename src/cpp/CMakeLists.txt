@@ -25,9 +25,13 @@ target_include_directories(acornlib PRIVATE
         ast
         interpreter
 )
+target_link_libraries(acornlib PRIVATE spdlog::spdlog_header_only)
 
 add_executable(acornc main.cpp)
 add_executable(acorn interpreter/main.cpp)
+target_link_libraries(acorn PRIVATE spdlog::spdlog_header_only)
+set_target_properties(acornc PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+set_target_properties(acorn PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
 # Link the acornc executable with the acornlib library
 target_link_libraries(acornc PRIVATE acornlib)

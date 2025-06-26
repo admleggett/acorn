@@ -9,10 +9,9 @@
 int JniJvmLauncher::doLaunch(const std::string& className, const std::vector<uint8_t>& bytecode) {
 
     //console out invocation of the JVM via JNI
-    //std::cout << "Launching JVM with class: " << className << std::endl;
+
 #ifdef HAVE_JNI_H
     // JNI code here
-
     JavaVM* jvm;
     JNIEnv* env;
 
@@ -30,8 +29,15 @@ int JniJvmLauncher::doLaunch(const std::string& className, const std::vector<uin
         return -1; // Failed to create JVM
     }
 
-    // Find the class
-    jclass cls = env->FindClass(className.c_str());
+    jclass cls = nullptr;
+    //if the byte array is empty
+    if (!bytecode.empty()){
+        //load the class via custom classloader
+        //add cout for debugging
+        std::cout << "Loading class " << className << " from bytecode." << std::endl;
+    } else {
+        cls = env->FindClass(className.c_str());
+    }
     if (cls == nullptr) {
         jvm->DestroyJavaVM();
         return -1; // Class not found

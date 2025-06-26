@@ -8,7 +8,7 @@ if(USING_JNI)
     set(CMAKE_JAVA_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
     #compile the Java files in the src/java directory
-    file(GLOB JAVA_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/java/acorn/loader/*.java)
+    file(GLOB JAVA_SOURCES acorn/classloader/*.java)
     message(STATUS "Java sources: ${JAVA_SOURCES}")
     add_jar(acornlib_java
             SOURCES ${JAVA_SOURCES}

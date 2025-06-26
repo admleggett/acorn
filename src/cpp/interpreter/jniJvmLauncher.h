@@ -2,8 +2,9 @@
 #define JNIJVMLAUNCHER_H
 
 #include "jvmLauncher.h"
+#include <iostream>
 
-class JniJvmLauncher : public IJvmLauncher {
+class JniJvmLauncher final : public IJvmLauncher {
 
 public:
     JniJvmLauncher() = default;

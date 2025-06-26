@@ -24,14 +24,18 @@ void ByteCodeWriter::write(const std::vector<std::unique_ptr<ASTNode>>& statemen
     if (!outFile) {
         throw std::runtime_error("Could not open output file for writing.");
     }
+    auto bytes = generate(statements);
+    outFile.write(reinterpret_cast<const char*>(bytes.data()), bytes.size());
+    outFile.close();
+    if (!outFile) {
+        throw std::runtime_error("Error writing to output file.");
+    }
 
-    //lambda to write a byteCodeSerializable object
-    auto write = [&](const ByteCodeSerializable& entry) {
-        auto bytes = entry.serialize();
-        outFile.write(reinterpret_cast<const char*>(bytes.data()), bytes.size());
-    };
+}
 
-    //get the first statement, which should be a PrintNode
+std::vector<uint8_t> ByteCodeWriter::generate(
+    const std::vector<std::unique_ptr<ASTNode>>& statements) const{
+       //get the first statement, which should be a PrintNode
     if (statements.empty()) {
         throw std::runtime_error("No statements to write.");
     }
@@ -99,10 +103,5 @@ void ByteCodeWriter::write(const std::vector<std::unique_ptr<ASTNode>>& statemen
     std::make_unique<ClassHeaderInfo>(std::move(classHeader)),
     std::make_unique<MethodInfo>(std::move(mainMethod)));
 
-    write(byteCode);
-    outFile.close();
-    if (!outFile) {
-        throw std::runtime_error("Error writing to output file.");
-    }
-
+    return byteCode.serialize();
 }

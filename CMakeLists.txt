@@ -9,5 +9,7 @@ set(CMAKE_CXX_STANDARD 17)
 # Flag for available JNI support
 option(USING_JNI "Enable JNI support" ON)
 
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
+include(Dependencies)
 add_subdirectory(src)
 add_subdirectory(tests)
