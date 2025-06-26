@@ -41,7 +41,8 @@ public:
         }
 
         auto className = sourceFileName;
-        auto classFileName = className + ".class";
+        const auto classFileName = className + ".class";
+
         // Create a scanner to read the source file
         auto scanner = std::make_unique<Scanner>(sourceFile);
 
@@ -53,8 +54,8 @@ public:
 
         // Create a compiler instance with the scanner, parser, and writer
         Compiler compiler(std::move(scanner), std::move(writer), std::move(parser));
-        // Compile the source file to bytecode
 
+        // Compile the source file to bytecode
         compiler.compile(classFileName);
 
         return className;

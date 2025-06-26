@@ -6,7 +6,7 @@
 #endif
 
 
-int JniJvmLauncher::launch(const std::string& className) {
+int JniJvmLauncher::doLaunch(const std::string& className, const std::vector<uint8_t>& bytecode) {
 
     //console out invocation of the JVM via JNI
     //std::cout << "Launching JVM with class: " << className << std::endl;
