@@ -1,9 +1,11 @@
 #include <gtest/gtest.h>
 #include <memory>
-#include "scanner.h"
-#include "parser.h"
-#include "byteCodeWriter.h"
-#include "compiler.h"
+#include "compiler/scanner.h"
+#include "compiler/parser.h"
+#include "compiler/byteCodeWriter.h"
+#include "compiler/compiler.h"
+#include <iostream>
+#include <fstream>
 
 // Declare the global variable
 extern std::vector<std::string> g_testArgs;
