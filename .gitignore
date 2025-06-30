@@ -19,8 +19,6 @@ CTestTestfile.cmake
 *.exe
 *.out
 *.class
-acornc
-acorn
 integrationTest
 
 # Test output
