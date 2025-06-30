@@ -1,13 +1,11 @@
 #include "byteCodeGeneratorVisitor.h"
 
-#include <constantClassInfo.h>
-#include <constantFieldInfo.h>
-#include <constantMethodInfo.h>
-#include <constantNameAndTypeInfo.h>
-#include <constantUtf8Info.h>
-#include <iostream>
-
-#include "model/constantIntegerInfo.h"
+#include "../model/constantClassInfo.h"
+#include "../model/constantFieldInfo.h"
+#include "../model/constantMethodInfo.h"
+#include "../model/constantNameAndTypeInfo.h"
+#include "../model/constantUtf8Info.h"
+#include "../model/constantIntegerInfo.h"
 #include "printNode.h"
 #include "intLiteralNode.h"
 

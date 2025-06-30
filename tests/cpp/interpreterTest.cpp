@@ -1,6 +1,5 @@
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
-
 #include "interpreter/interpreter.h"
 #include "interpreter/jvmLauncher.h"
 
@@ -8,13 +7,13 @@ class MockJvmLauncher : public IJvmLauncher
 {
 public:
     MOCK_METHOD(int, launch, (const std::string& clazz), (override));
+    MOCK_METHOD(int, launch, (const std::string& clazz, const std::vector<uint8_t>& bytecode), (override));
 };
 
 class MockCompilerApplication : public ICompilerApplication
 {
 public:
-   MOCK_METHOD(std::string, compile, (std::string sourceFile), (override));
-
+    MOCK_METHOD(std::string, compile, (std::string sourceFile), (override));
 };
 
 TEST(interpreterTest, InterpreterHandlesErrorTest)
